@@ -23,6 +23,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(QtProject-trust
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        player.h player.cpp
+        judge.h judge.cpp
+        match_result.h match_result.cpp
+        tournament.h tournament.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET QtProject-trust APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

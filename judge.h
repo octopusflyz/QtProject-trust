@@ -10,8 +10,9 @@ class Judge : public QWidget
 public:
     explicit Judge(QWidget *parent = nullptr);
     QList< QList< Match_Result > > rewards;
-    QList< const Match_Result > history;
+    QList< Match_Result > history;
     int match_num;
+    Player_Pair prev_opponent;
 
     void init();
     const Match_Result& match(Player_Pair players);

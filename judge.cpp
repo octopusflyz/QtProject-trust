@@ -22,7 +22,8 @@ void Judge::init(){
 }
 
 const Match_Result& Judge::match(Player_Pair players){
-    const Match_Result res = rewards[players[0]->choice(history)][players[1]->choice(history)];
+    Match_Result res = rewards[players[0]->choice(history)][players[1]->choice(history)];
+    prev_opponent = players;
     history.append(res);
     for(int i=0;i<2;i++){
         players[i]->update_score(res.delta_score[i]);

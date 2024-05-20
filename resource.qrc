@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>creature.png</file>
-        <file>creature_left.png</file>
-        <file>machine.png</file>
-        <file>coin.png</file>
-        <file>what to do.png</file>
-    </qresource>
-</RCC>

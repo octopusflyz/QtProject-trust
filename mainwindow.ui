@@ -13,19 +13,135 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>9</y>
+      <width>781</width>
+      <height>491</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <widget class="pg_welcome" name="page_1"/>
+    <widget class="pg_twoplayers" name="page_3"/>
+    <widget class="pg_tournament" name="page_4"/>
+    <widget class="pg_allplayers" name="page_5"/>
+    <widget class="pg_rules" name="page_2"/>
+   </widget>
+   <widget class="QPushButton" name="welcomeButton">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>510</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="rulesButton">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>510</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="twoplayerButton">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>510</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="tournamentButton">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>510</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="allplayerButton">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>510</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>pg_welcome</class>
+   <extends>QWidget</extends>
+   <header location="global">pg_welcome.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>pg_rules</class>
+   <extends>QWidget</extends>
+   <header location="global">pg_rules.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>pg_twoplayers</class>
+   <extends>QWidget</extends>
+   <header location="global">pg_twoplayers.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>pg_tournament</class>
+   <extends>QWidget</extends>
+   <header location="global">pg_tournament.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>pg_allplayers</class>
+   <extends>QWidget</extends>
+   <header location="global">pg_allplayers.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

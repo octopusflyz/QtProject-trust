@@ -20,23 +20,29 @@
       <x>9</x>
       <y>9</y>
       <width>781</width>
-      <height>491</height>
+      <height>501</height>
      </rect>
     </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
-    <widget class="pg_welcome" name="page_1"/>
-    <widget class="pg_twoplayers" name="page_3"/>
-    <widget class="pg_tournament" name="page_4"/>
-    <widget class="pg_allplayers" name="page_5"/>
-    <widget class="pg_rules" name="page_2"/>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="currentIndex">
+     <number>4</number>
+    </property>
+    <widget class="page_welcome" name="page_1"/>
+    <widget class="page_rules" name="page_2"/>
+    <widget class="page_twoplayers" name="page_3"/>
+    <widget class="page_tournament" name="page_4"/>
+    <widget class="page_allplayers" name="page_5"/>
    </widget>
    <widget class="QPushButton" name="welcomeButton">
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>510</y>
+      <y>520</y>
       <width>51</width>
       <height>41</height>
      </rect>
@@ -49,7 +55,7 @@
     <property name="geometry">
      <rect>
       <x>170</x>
-      <y>510</y>
+      <y>520</y>
       <width>51</width>
       <height>41</height>
      </rect>
@@ -62,7 +68,7 @@
     <property name="geometry">
      <rect>
       <x>280</x>
-      <y>510</y>
+      <y>520</y>
       <width>51</width>
       <height>41</height>
      </rect>
@@ -74,8 +80,8 @@
    <widget class="QPushButton" name="tournamentButton">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>510</y>
+      <x>390</x>
+      <y>520</y>
       <width>51</width>
       <height>41</height>
      </rect>
@@ -87,8 +93,8 @@
    <widget class="QPushButton" name="allplayerButton">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>510</y>
+      <x>500</x>
+      <y>520</y>
       <width>51</width>
       <height>41</height>
      </rect>
@@ -112,33 +118,33 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>pg_welcome</class>
+   <class>page_welcome</class>
    <extends>QWidget</extends>
-   <header location="global">pg_welcome.h</header>
+   <header location="global">page_welcome.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>pg_rules</class>
+   <class>page_twoplayers</class>
    <extends>QWidget</extends>
-   <header location="global">pg_rules.h</header>
+   <header location="global">page_twoplayers.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>pg_twoplayers</class>
+   <class>page_rules</class>
    <extends>QWidget</extends>
-   <header location="global">pg_twoplayers.h</header>
+   <header location="global">page_rules.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>pg_tournament</class>
+   <class>page_tournament</class>
    <extends>QWidget</extends>
-   <header location="global">pg_tournament.h</header>
+   <header location="global">page_tournament.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>pg_allplayers</class>
+   <class>page_allplayers</class>
    <extends>QWidget</extends>
-   <header location="global">pg_allplayers.h</header>
+   <header location="global">page_allplayers.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

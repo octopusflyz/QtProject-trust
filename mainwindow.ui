@@ -114,31 +114,31 @@
   <customwidget>
    <class>pg_welcome</class>
    <extends>QWidget</extends>
-   <header location="global">pg_welcome.h</header>
+   <header>pg_welcome.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>pg_rules</class>
    <extends>QWidget</extends>
-   <header location="global">pg_rules.h</header>
+   <header>pg_rules.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>pg_twoplayers</class>
    <extends>QWidget</extends>
-   <header location="global">pg_twoplayers.h</header>
+   <header>pg_twoplayers.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>pg_tournament</class>
    <extends>QWidget</extends>
-   <header location="global">pg_tournament.h</header>
+   <header>pg_tournament.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>pg_allplayers</class>
    <extends>QWidget</extends>
-   <header location="global">pg_allplayers.h</header>
+   <header>pg_allplayers.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

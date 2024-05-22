@@ -14,6 +14,7 @@ class pg_tournament : public QWidget
 public:
     explicit pg_tournament(QWidget *parent = nullptr);
     ~pg_tournament();
+    void paintEvent(QPaintEvent *event);
 
 private:
     Ui::pg_tournament *ui;

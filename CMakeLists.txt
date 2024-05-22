@@ -12,8 +12,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
@@ -35,20 +33,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
 
         res.qrc
-        build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_welcome.h build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_welcome.cpp build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_welcome.ui
-        build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_rules.h build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_rules.cpp build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_rules.ui
-        build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_twoplayers.h build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_twoplayers.cpp build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_twoplayers.ui
-        build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_tournament.h build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_tournament.cpp build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_tournament.ui
-        build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_allplayers.h build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_allplayers.cpp build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtProject-trust_autogen/include/page_allplayers.ui
-
-
-
-
-
-
-
-
-
+        pg_welcome.h pg_welcome.cpp pg_welcome.ui
+        pg_rules.h pg_rules.cpp pg_rules.ui
+        pg_twoplayers.h pg_twoplayers.cpp pg_twoplayers.ui
+        pg_allplayers.h pg_allplayers.cpp pg_allplayers.ui
+        pg_tournament.h pg_tournament.cpp pg_tournament.ui
 
 
 
@@ -89,6 +78,12 @@ set_target_properties(QtProject-trust PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+include(GNUInstallDirs)
+install(TARGETS QtProject-trust
+    BUNDLE DESTINATION .
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(QtProject-trust)

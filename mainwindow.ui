@@ -24,13 +24,13 @@
      </rect>
     </property>
     <property name="frameShape">
-     <enum>QFrame::Box</enum>
+     <enum>QFrame::NoFrame</enum>
     </property>
     <widget class="pg_welcome" name="page_1"/>
+    <widget class="pg_rules" name="page_2"/>
     <widget class="pg_twoplayers" name="page_3"/>
     <widget class="pg_tournament" name="page_4"/>
     <widget class="pg_allplayers" name="page_5"/>
-    <widget class="pg_rules" name="page_2"/>
    </widget>
    <widget class="QPushButton" name="welcomeButton">
     <property name="geometry">
@@ -74,7 +74,7 @@
    <widget class="QPushButton" name="tournamentButton">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>390</x>
       <y>510</y>
       <width>51</width>
       <height>41</height>
@@ -87,7 +87,7 @@
    <widget class="QPushButton" name="allplayerButton">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>500</x>
       <y>510</y>
       <width>51</width>
       <height>41</height>

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/coin.png</file>
+        <file>image/creature.png</file>
+        <file>image/creature_left.png</file>
+        <file>image/machine_00.png</file>
+        <file>image/machine_01.png</file>
+        <file>image/machine_10.png</file>
+        <file>image/machine_11.png</file>
+        <file>image/machine_update.png</file>
+        <file>image/tournament.png</file>
+        <file>image/what to do.png</file>
+    </qresource>
+</RCC>

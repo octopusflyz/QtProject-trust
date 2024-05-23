@@ -12,6 +12,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
@@ -27,6 +29,22 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         judge.h judge.cpp
         match_result.h match_result.cpp
         tournament.h tournament.cpp
+
+
+
+
+
+        res.qrc
+        pg_welcome.h pg_welcome.cpp pg_welcome.ui
+        pg_rules.h pg_rules.cpp pg_rules.ui
+        pg_twoplayers.h pg_twoplayers.cpp pg_twoplayers.ui
+        pg_allplayers.h pg_allplayers.cpp pg_allplayers.ui
+        pg_tournament.h pg_tournament.cpp pg_tournament.ui
+
+
+
+
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET QtProject-trust APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

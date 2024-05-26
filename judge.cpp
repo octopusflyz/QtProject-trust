@@ -30,3 +30,7 @@ const Match_Result& Judge::match(Player_Pair players){
     }
     return history.back();
 }
+
+void Judge::reward_reset(int i,int j,int r_i,int r_j){
+    rewards[i][j]=Match_Result(i,j,r_i,r_j);
+}

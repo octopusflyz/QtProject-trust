@@ -4,30 +4,27 @@
 #include <QWidget>
 #include <QString>
 #include "match_result.h"
-
+#define ELIMINATION 10
 class Player : public QWidget
 {
     Q_OBJECT
 public:
     explicit Player(QWidget *parent = nullptr);
-    int type;//排序的时候比较用的，使得同类别地排在一起--type=10的时候代表该player被淘汰
     int curr_id;
     int score;
     int probility;
+    int type;//排序用的,=ELIMINATION(10)表示淘汰
     QString name;
-    virtual void init(int id,bool hard = false);//重新设置id以及hard
-    virtual int choice(const QList< Match_Result > & history) = 0;//选择函数
-    void update_score(int s);//更新分数
+    virtual void init(int id,bool hard = false);
+    virtual int choice(const QList< Match_Result > & history) = 0;
+    void update_score(int s);
     virtual QSharedPointer<Player> clone() = 0;
-
-    int random_mistake(int choice);//随机犯错
-    friend bool PlayerType_Compare(const Player& P1,const Player& P2);//用于使得所有同类型Player站在一起
-    friend bool PlayerScore_Compare(const Player& P1,const Player& P2);//用于将所有分数最低的人踢出
-    int& get_type();
+    int random_mistake(int choice);//随机犯错函数
+    int& get_type();//获取type(并修改)
+    friend int PlayerType_Compare();//按照type降序
+    friend int PlayerScore_Compare();//按照score升序
 signals:
 };
-bool PlayerType_Compare(const Player& P1,const Player& P2);//用于使得所有同类型Player站在一起
-bool PlayerScore_Compare(const Player& P1,const Player& P2);//用于将所有分数最低的人踢出
 
 class Player_Pair{
 public:
@@ -69,5 +66,8 @@ public:
     virtual QSharedPointer<Player> clone();
     virtual int choice(const QList< Match_Result > & history);
 };
+
+int PlayerType_Compare();
+int PlayerScore_Compare();
 
 #endif // PLAYER_H

@@ -275,6 +275,10 @@ void Tournament_Worker::Set_flag(int step,bool flag_conti /*=true*/,bool flag_st
 
 bool Tournament_Worker::Get_flag(){
     QMutexLocker locker(flag_mutex.data());
+    if(continue_flag && !start_flag){
+        continue_flag=false;
+        return true;
+    }
     return continue_flag;
 }
 

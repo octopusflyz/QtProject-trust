@@ -10,5 +10,22 @@
         <file>image/machine_update.png</file>
         <file>image/tournament.png</file>
         <file>image/what to do.png</file>
+        <file>image/random.png</file>
+        <file>image/simpleton.png</file>
+        <file>image/cheater.png</file>
+        <file>image/copykitten.png</file>
+        <file>image/grudger.png</file>
+        <file>image/cooperator.png</file>
+        <file>image/copycat.png</file>
+        <file>image/detective.png</file>
+        <file>image/hat_cheater.png</file>
+        <file>image/hat_cooperator.png</file>
+        <file>image/hat_copycat.png</file>
+        <file>image/hat_detective.png</file>
+        <file>image/hat_grudger.png</file>
+        <file>image/hat_random.png</file>
+        <file>image/hat_copykitten.png</file>
+        <file>image/hat_simpleton.png</file>
+        <file>image/payoffs.png</file>
     </qresource>
 </RCC>

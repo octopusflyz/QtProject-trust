@@ -48,6 +48,7 @@ public:
     void Tournament_Round();
     void reset();
     void Work_OnStep(int step);
+    void Set_step(int step);
     void Set_flag(int step,bool flag_conti=true,bool flag_start=true);//flag指continue_flag
     bool Get_flag();//获取continue_flag
     int Get_step();

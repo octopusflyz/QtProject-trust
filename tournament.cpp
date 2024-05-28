@@ -265,6 +265,12 @@ void Tournament_Worker::KickThemOut(){
     return;
 }
 
+void Tournament_Worker::Set_step(int step){
+    QMutexLocker locker(flag_mutex.data());
+    step_flag=step;
+    return ;
+}
+
 void Tournament_Worker::Set_flag(int step,bool flag_conti /*=true*/,bool flag_start /*=true*/){
     QMutexLocker locker(flag_mutex.data());
     step_flag=step;
@@ -292,27 +298,32 @@ void Tournament_Worker::Work_OnStep(int step){
         LetThemIn();
         emit Update_signal();//发出更新请求
         QThread::sleep(50);//等更新
-        Set_flag(1);
+        Set_step(1);
         return;
     }
     if(step==1){
         Competition();
-        Set_flag(2);
+        Set_step(2);
         return;
     }
     if(step==2){
         KickThemOut();
-        Set_flag(0);
+        Set_step(0);
         return;
     }
 }
 
 void Tournament_Worker::Tournament_Round(){
     while(true){
+        QThread::sleep(50);
         if(Get_flag()){
             Work_OnStep(Get_step());
         }
+        else{
+            break;
+        }
     }
+    return ;
 }
 
 void Tournament_Worker::Button_OnPush(int index){

@@ -99,6 +99,14 @@ bool PlayerScore_Compare(const Player& p1,const Player &p2){
     return p1.score>p2.score;
 }
 
+bool PlayerPtrType_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2){
+    return p1->type<p2->type;
+}
+
+bool PlayerPtrScore_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2){
+    return p1->score>p2->score;
+}
+
 int& Player::get_type(){
     return type;
 }

@@ -1,5 +1,11 @@
 #include "tournament.h"
 
+QVector<int> Tournament::Init_PlayerTypeNum={3,3,3,3};
+int Tournament::Init_ValMatrix[2][2][2]={{{2,2},{-1,3}},{{3,-1},{0,0}}};
+int Tournament::Init_Elim_num=5;
+int Tournament::Init_Probility=5;
+int Tournament::Init_num_games=10;
+
 Tournament_Worker::Tournament_Worker(int _Playernum):PlayerNum(_Playernum){
     start_flag=false;
     continue_flag=false;
@@ -117,7 +123,7 @@ QVector<int> Tournament::PlayerNum_Change(int index){
     QMutexLocker locker(mutex.data());
     int new_data=Player_slider[index].data()->value();
     if(new_data==PlayerTypeNum_cache[index]) return QVector<int>(PlayerTypeNum_cache);
-    std::shuffle(Order_change.begin(),Order_change.end(),QRandomGenerator::global());
+    std::shuffle(Order_change.begin(),Order_change.end(),std::mt19937(std::random_device{}()));
 
     if(new_data>PlayerTypeNum_cache[index]){
         int dinst=new_data-PlayerTypeNum_cache[index];
@@ -240,7 +246,7 @@ void Tournament_Worker::LetThemIn(){
             ++input_num;
         }
     }
-    std::stable_sort(player_pool.begin(),player_pool.end(),PlayerType_Compare);
+    std::stable_sort(player_pool.begin(),player_pool.end(),PlayerPtrType_Compare);
     return ;
 }
 
@@ -250,7 +256,7 @@ void Tournament_Worker::Competition(){
         for(int j=i+1;j<player_pool.length();++j)
             one_vs_one(i,j);
     QList<QSharedPointer<Player>> lst=player_pool;
-    std::sort(lst.begin(),lst.end(),PlayerScore_Compare);
+    std::sort(lst.begin(),lst.end(),PlayerPtrScore_Compare);
     Winner_list.clear();
     Winner_list.append(lst.mid(0,Elim_num));
     return;
@@ -259,7 +265,7 @@ void Tournament_Worker::Competition(){
 void Tournament_Worker::KickThemOut(){
     Elim_list.clear();
     QList<QSharedPointer<Player>> lst=player_pool;
-    std::sort(lst.begin(),lst.end(),PlayerScore_Compare);
+    std::sort(lst.begin(),lst.end(),PlayerPtrScore_Compare);
     Elim_list.append(lst.mid(lst.length()-Elim_num,Elim_num));
     for(int i=0;i<Elim_num;++i) Elim_list[i]->get_type()=ELIMINATION;
     return;

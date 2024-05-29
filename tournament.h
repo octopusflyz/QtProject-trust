@@ -20,6 +20,7 @@ public:
     bool continue_flag;//程序是否需要继续运行
     int step_flag;//程序计算到哪一个阶段了
                   //0表示尚未开始，1表示LetThemIn,2表示主运算，3表示LetThemOut
+    // 3 steps
     QSharedPointer<QMutex> flag_mutex;
     QSharedPointer<QMutex> mutex;
     //QSharedPointer<QMutex> update_mutex;
@@ -123,9 +124,5 @@ signals:
     void Connect_signal();//链接PlayerTypeNum到Control_signal
     //void Update_signal();//用于发出更新指令，调用Update函数
 };
-QVector<int> Tournament::Init_PlayerTypeNum={3,3,3,3};
-int Tournament::Init_ValMatrix[2][2][2]={{{2,2},{-1,3}},{{3,-1},{0,0}}};
-int Tournament::Init_Elim_num=5;
-int Tournament::Init_Probility=5;
-int Tournament::Init_num_games=10;
+
 #endif // TOURNAMENT_H

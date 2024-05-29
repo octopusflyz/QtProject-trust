@@ -38,9 +38,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         pg_welcome.h pg_welcome.cpp pg_welcome.ui
         pg_rules.h pg_rules.cpp pg_rules.ui
         pg_twoplayers.h pg_twoplayers.cpp pg_twoplayers.ui
-        pg_allplayers.h pg_allplayers.cpp pg_allplayers.ui
+
         pg_tournament.h pg_tournament.cpp pg_tournament.ui
         slider.h slider.cpp slider.ui
+        pg_sandbox.h pg_sandbox.cpp pg_sandbox.ui
+        sandbox_ui.h sandbox_ui.cpp
 
 
 

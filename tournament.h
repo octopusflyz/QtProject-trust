@@ -12,6 +12,8 @@
 #include <QPushButton>
 #include "judge.h"
 
+class Tournament;
+
 class Tournament_Worker : public QObject{
     Q_OBJECT
 public:
@@ -39,8 +41,11 @@ public:
     int Elim_num;//每轮的淘汰人数
     int Probability;//犯错概率，单位%
 
+    //widget
+    Tournament* tournament;
+
     QList<QSharedPointer<Player>> Winner_list,Elim_list;
-    explicit Tournament_Worker(int _PlayerNum);
+    explicit Tournament_Worker(int _PlayerNum,Tournament* par);
     void one_vs_one(int id1,int id2);//1-1比赛
     void LetThemIn();
     void Competition();
@@ -58,18 +63,20 @@ signals:
     void Start_signal();
 };
 
+class Sandbox_ui;
+
 class Tournament : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Tournament(QWidget *parent = nullptr);
+    explicit Tournament(Sandbox_ui* ui,QWidget *parent = nullptr);
     ~Tournament();
     QSharedPointer<QMutex> mutex;
     //QSharedPointer<QMutex> update_mutex;
     Tournament_Worker *Worker;
     int PlayerNum;
     //选手类别数量部分
-    int type_number=4;//类别的数量
+    static int type_number;//类别的数量
     static QVector<int> Init_PlayerTypeNum;//我随便设的，看你们ui怎么设置比较方便
     QVector<int> PlayerTypeNum_cache;//各个类别选手的数量
     QVector<QSharedPointer<QSlider>> Player_slider;//选手类别的滑动条

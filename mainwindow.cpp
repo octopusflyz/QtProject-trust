@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->allplayerButton,&QPushButton::clicked,this,[=](){
         ui->stackedWidget->setCurrentIndex(4);
     });
+    setStyleSheet("border: 2px solid red;");
+    connect(ui->stackedWidget,&QStackedWidget::currentChanged,ui->page_6,&pg_sandbox::test_slot);
 }
 
 MainWindow::~MainWindow()

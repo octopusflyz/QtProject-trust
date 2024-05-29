@@ -1,12 +1,14 @@
 #include "tournament.h"
+#include "sandbox_ui.h"
 
+int Tournament::type_number = 4;
 QVector<int> Tournament::Init_PlayerTypeNum={3,3,3,3};
 int Tournament::Init_ValMatrix[2][2][2]={{{2,2},{-1,3}},{{3,-1},{0,0}}};
 int Tournament::Init_Elim_num=5;
 int Tournament::Init_Probility=5;
 int Tournament::Init_num_games=10;
 
-Tournament_Worker::Tournament_Worker(int _Playernum):PlayerNum(_Playernum){
+Tournament_Worker::Tournament_Worker(int _Playernum,Tournament* par):PlayerNum(_Playernum),tournament(par){
     start_flag=false;
     continue_flag=false;
     step_flag=0;
@@ -14,15 +16,35 @@ Tournament_Worker::Tournament_Worker(int _Playernum):PlayerNum(_Playernum){
     connect(this,&Tournament_Worker::Start_signal,this,&Tournament_Worker::Tournament_Round);
 }
 
-Tournament::Tournament(QWidget *parent)
+Tournament::Tournament(Sandbox_ui* ui,QWidget *parent)
     : QWidget{parent}
 {
-    reset();
     //我不知道怎么留构造函数的接口比较方便
     //下面是所有变量都已经定义好了之后各个信号和槽之间的链接关系的一个实现
     //注意：我没有写QSpinBox的绑定(就都合作都cheat的val应该是相等的)，所以需要在外面绑定好
+    Player_slider=ui->Player_slider;
+    ElimNum_slider=ui->ElimNum_slider;
+    NumGame_slider=ui->NumGame_slider;
+    Prob_slider=ui->Prob_slider;
+    ValMatrix_spinbox={{{QSharedPointer<QSpinBox>::create(),\
+                            QSharedPointer<QSpinBox>::create()},\
+                           {QSharedPointer<QSpinBox>::create(),\
+                            QSharedPointer<QSpinBox>::create()}},\
+                          {{QSharedPointer<QSpinBox>::create(),\
+                            QSharedPointer<QSpinBox>::create()},\
+                           {QSharedPointer<QSpinBox>::create(),\
+                           QSharedPointer<QSpinBox>::create()}}};
+    Start_button=QSharedPointer<QPushButton>::create("START",this);
+    Step_button=QSharedPointer<QPushButton>::create("STEP",this);
+    Reset_button=QSharedPointer<QPushButton>::create("RESET",this);
+    // resize(150,400);
+    // move(0,0);
+    Start_button->move(50,30);
+    Step_button->move(50,130);
+    Reset_button->move(50,230);
+    auto tmp = new QLabel("TOURNAMENT",this);
 
-    Worker=new Tournament_Worker(PlayerNum);//前面的变量初始化之后调用一次Update函数就好了
+    Worker=new Tournament_Worker(PlayerNum,this);//前面的变量初始化之后调用一次Update函数就好了
     mutex=QSharedPointer<QMutex>::create();
     //update_mutex=QSharedPointer<QMutex>::create();
     Worker_Thread=QSharedPointer<QThread>::create(this);
@@ -70,17 +92,22 @@ Tournament::Tournament(QWidget *parent)
 
     //控制部分的信号链接
     Control_signal=QSharedPointer<QSignalMapper>::create(this);
-    Control_signal->setMapping(Start_button.data(),0);
-    Control_signal->setMapping(Step_button.data(),1);
 
-
-    Control_signal->setMapping(this,2);//PlayerTypeNum的信号
-    connect(this,&Tournament::Connect_signal,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
-    connect(Start_button.data(),&QPushButton::clicked,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
-    connect(Step_button.data(),&QPushButton::clicked,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
-    connect(Control_signal.data(),&QSignalMapper::mappedInt,Worker,&Tournament_Worker::Button_OnPush);
+    // connect(this,&Tournament::Connect_signal,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    // connect(Start_button.data(),&QPushButton::clicked,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    // connect(Step_button.data(),&QPushButton::clicked,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    // Control_signal->setMapping(Start_button.data(),0);
+    // Control_signal->setMapping(Step_button.data(),1);
+    // Control_signal->setMapping(this,2);//PlayerTypeNum的信号
+    // connect(Control_signal.data(),&QSignalMapper::mappedInt,Worker,&Tournament_Worker::Button_OnPush);
+    connect(this,&Tournament::Connect_signal,Worker,[&](){Worker->Button_OnPush(0);});
+    connect(Start_button.data(),&QPushButton::clicked,Worker,[&](){Worker->Button_OnPush(1);});
+    connect(Step_button.data(),&QPushButton::clicked,Worker,[&](){Worker->Button_OnPush(2);});
+    connect(Start_button.data(),&QPushButton::clicked,Worker,[=](){qDebug()<<"START PRESSED";});
 
     connect(Reset_button.data(),&QPushButton::clicked,this,&Tournament::reset);
+
+    reset();
 }
 
 Tournament::~Tournament(){
@@ -93,10 +120,18 @@ void Tournament::reset(){
     num_games_cache=Init_num_games;
     Elim_num_cache=Init_Elim_num;
     Probility_cache=Init_Probility;
+    ValMatrix_cache.clear();
+    ValMatrix_cache.resize(2);
+    for(int i=0;i<2;i++) ValMatrix_cache[i].resize(2);
+    for(int i=0;i<2;i++)
+        for(int j=0;j<2;j++)
+            ValMatrix_cache[i][j].resize(2);
     for(int i=0;i<2;++i)
         for(int j=0;j<2;++j)
             for(int k=0;k<2;++k)
                 ValMatrix_cache[i][j][k]=Init_ValMatrix[i][j][k];
+    PlayerTypeNum_cache.clear();
+    PlayerTypeNum_cache.resize(type_number);
     for(int i=0;i<type_number;++i) PlayerTypeNum_cache[i]=Init_PlayerTypeNum[i];
     locker.unlock();//这里要释放掉，不然会死锁
     Worker->reset();
@@ -182,10 +217,8 @@ void Tournament::Update(){
     QMutexLocker locker(mutex.data());
     //QMutexLocker locker_update(update_mutex.data());
     Worker->PlayerNum=PlayerNum;
-    for(int i=0;i<type_number;++i) Worker->PlayerTypeNum[i]=PlayerTypeNum_cache[i];
-    for(int i=0;i<2;++i)
-        for(int j=0;j<2;++j)
-            for(int k=0;k<2;++k) Worker->ValMatrix[i][j][k]=ValMatrix_cache[i][j][k];
+    Worker->PlayerTypeNum=PlayerTypeNum_cache;
+    Worker->ValMatrix=ValMatrix_cache;
     for(int i=0;i<2;++i)
         for(int j=0;j<2;++j)
             Worker->judge->reward_reset(i,j,ValMatrix_cache[i][j][i],ValMatrix_cache[i][j][j]);
@@ -226,6 +259,7 @@ void Tournament_Worker::reset(){
     player_pool.clear();
     Winner_list.clear();
     Elim_list.clear();
+    judge.reset(new Judge()); // TO CHECK!!!!
     emit Update_signal();
     return;
 }
@@ -233,10 +267,10 @@ void Tournament_Worker::reset(){
 void Tournament_Worker::LetThemIn(){
     if(player_pool.empty()){
         player_pool.resize(PlayerNum);
-        for(int j=0;j<PlayerTypeNum[0];++j) player_pool.append(QSharedPointer<Player>(new Player_Cooperator()));
-        for(int j=0;j<PlayerTypeNum[1];++j) player_pool.append(QSharedPointer<Player>(new Player_Cheater()));
-        for(int j=0;j<PlayerTypeNum[2];++j) player_pool.append(QSharedPointer<Player>(new Player_Copy_Cat()));
-        for(int j=0;j<PlayerTypeNum[3];++j) player_pool.append(QSharedPointer<Player>(new Player_Random()));
+        for(int j=0;j<PlayerTypeNum[0];++j) player_pool.append(QSharedPointer<Player>(new Player_Cooperator(tournament)));
+        for(int j=0;j<PlayerTypeNum[1];++j) player_pool.append(QSharedPointer<Player>(new Player_Cheater(tournament)));
+        for(int j=0;j<PlayerTypeNum[2];++j) player_pool.append(QSharedPointer<Player>(new Player_Copy_Cat(tournament)));
+        for(int j=0;j<PlayerTypeNum[3];++j) player_pool.append(QSharedPointer<Player>(new Player_Random(tournament)));
         return ;
     }
     int input_num=0;

@@ -34,8 +34,14 @@ QDebug operator << (QDebug debug, Player_Pair p){
     return debug;
 }
 
+int Player::random_mistake(int choice){
+    int randomNumber=QRandomGenerator::global()->bounded(1,101);
+    return (randomNumber<=probility ? choice : 1-choice);
+}
+
 Player_Cooperator::Player_Cooperator(QWidget *parent) : Player(parent){
     name="Cooperator";
+    type=0;
 }
 
 QSharedPointer<Player> Player_Cooperator::clone(){
@@ -43,11 +49,12 @@ QSharedPointer<Player> Player_Cooperator::clone(){
 }
 
 int Player_Cooperator::choice(const QList< Match_Result > & history){
-    return 0;
+    return random_mistake(0);
 }
 
 Player_Cheater::Player_Cheater(QWidget *parent) : Player(parent){
     name="Cheater";
+    type=1;
 }
 
 QSharedPointer<Player> Player_Cheater::clone(){
@@ -55,11 +62,12 @@ QSharedPointer<Player> Player_Cheater::clone(){
 }
 
 int Player_Cheater::choice(const QList< Match_Result > & history){
-    return 1;
+    return random_mistake(1);
 }
 
 Player_Copy_Cat::Player_Copy_Cat(QWidget *parent) : Player(parent){
     name="Copy Cat";
+    type=2;
 }
 
 QSharedPointer<Player> Player_Copy_Cat::clone(){
@@ -67,12 +75,13 @@ QSharedPointer<Player> Player_Copy_Cat::clone(){
 }
 
 int Player_Copy_Cat::choice(const QList< Match_Result > & history){
-    if(history.empty()) return 0;
-    return history.back().action[1-curr_id];
+    if(history.empty()) return random_mistake(0);
+    return random_mistake(history.back().action[1-curr_id]);
 }
 
 Player_Random::Player_Random(QWidget *parent) : Player(parent){
     name="Random";
+    type=3;
 }
 
 QSharedPointer<Player> Player_Random::clone(){
@@ -81,4 +90,15 @@ QSharedPointer<Player> Player_Random::clone(){
 
 int Player_Random::choice(const QList< Match_Result > & history){
     return QRandomGenerator::global()->generate() % 2;
+}
+
+bool PlayerType_Compare(const Player& p1,const Player &p2){
+    return p1.type<p2.type;
+}
+bool PlayerScore_Compare(const Player& p1,const Player &p2){
+    return p1.score>p2.score;
+}
+
+int& Player::get_type(){
+    return type;
 }

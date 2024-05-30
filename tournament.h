@@ -69,7 +69,7 @@ class Tournament : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Tournament(Sandbox_ui* ui,QWidget *parent = nullptr);
+    explicit Tournament(/*Sandbox_ui* ui,*/QWidget *parent = nullptr);
     ~Tournament();
     QSharedPointer<QMutex> mutex;
     //QSharedPointer<QMutex> update_mutex;
@@ -79,7 +79,7 @@ public:
     static int type_number;//类别的数量
     static QVector<int> Init_PlayerTypeNum;//我随便设的，看你们ui怎么设置比较方便
     QVector<int> PlayerTypeNum_cache;//各个类别选手的数量
-    QVector<QSharedPointer<QSlider>> Player_slider;//选手类别的滑动条
+    QVector<QSlider*> Player_slider;//选手类别的滑动条
     QSharedPointer<QSignalMapper> PlayerTypeNum_signal;
     QVector<int> Order_change;//辅助量，用于PlayerNum_Change函数
 
@@ -88,7 +88,7 @@ public:
     QSharedPointer<Judge> judge;
     static int Init_ValMatrix[2][2][2];
     QVector<QVector<QVector<int>>> ValMatrix_cache;//mat(i,j,k)表示在双方的(i,j)选择下选择k的得分
-    QVector<QVector<QVector<QSharedPointer<QSpinBox>>>> ValMatrix_spinbox;
+    QVector<QVector<QVector<QSpinBox*>>> ValMatrix_spinbox;
     QSharedPointer<QSignalMapper> ValMatrix_signal;
 
     //rule部分
@@ -96,15 +96,15 @@ public:
     int num_games_cache;//每场锦标赛的轮数
     int Elim_num_cache;//每轮的淘汰人数
     int Probility_cache;//犯错概率，单位%
-    QSharedPointer<QSlider> NumGame_slider;
-    QSharedPointer<QSlider> ElimNum_slider;
-    QSharedPointer<QSlider> Prob_slider;
+    QSlider* NumGame_slider;
+    QSlider* ElimNum_slider;
+    QSlider* Prob_slider;
     QSharedPointer<QSignalMapper> Rule_signal;
 
     //控制部分
-    QSharedPointer<QPushButton> Start_button;
-    QSharedPointer<QPushButton> Step_button;
-    QSharedPointer<QPushButton> Reset_button;
+    QPushButton* Start_button;
+    QPushButton* Step_button;
+    QPushButton* Reset_button;
     QSharedPointer<QSignalMapper> Control_signal;
 
     QList< QSharedPointer<Player> > player_pool;//tournament参赛者,保留下来了,在工作线程没用到这个

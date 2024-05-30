@@ -21,8 +21,10 @@ public:
     virtual QSharedPointer<Player> clone() = 0;
     int random_mistake(int choice);//随机犯错函数
     int& get_type();//获取type(并修改)
-    friend int PlayerType_Compare();//按照type降序
-    friend int PlayerScore_Compare();//按照score升序
+    friend bool PlayerType_Compare(const Player& p1,const Player &p2);//按照type降序
+    friend bool PlayerScore_Compare(const Player& p1,const Player &p2);//按照score升序
+    friend bool PlayerPtrType_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);//按照type降序
+    friend bool PlayerPtrScore_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);//按照score升序
 signals:
 };
 
@@ -66,8 +68,9 @@ public:
     virtual QSharedPointer<Player> clone();
     virtual int choice(const QList< Match_Result > & history);
 };
-
-int PlayerType_Compare();
-int PlayerScore_Compare();
+bool PlayerType_Compare(const Player& p1,const Player &p2);
+bool PlayerScore_Compare(const Player& p1,const Player &p2);
+bool PlayerPtrType_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);
+bool PlayerPtrScore_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);
 
 #endif // PLAYER_H

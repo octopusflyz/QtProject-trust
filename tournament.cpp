@@ -1,5 +1,5 @@
 #include "tournament.h"
-#include "sandbox_ui.h"
+//#include "sandbox_ui.h"
 
 int Tournament::type_number = 4;
 QVector<int> Tournament::Init_PlayerTypeNum={3,3,3,3};
@@ -16,33 +16,35 @@ Tournament_Worker::Tournament_Worker(int _Playernum,Tournament* par):PlayerNum(_
     connect(this,&Tournament_Worker::Start_signal,this,&Tournament_Worker::Tournament_Round);
 }
 
-Tournament::Tournament(Sandbox_ui* ui,QWidget *parent)
+Tournament::Tournament(/*Sandbox_ui,*/QWidget *parent)
     : QWidget{parent}
 {
     //我不知道怎么留构造函数的接口比较方便
     //下面是所有变量都已经定义好了之后各个信号和槽之间的链接关系的一个实现
     //注意：我没有写QSpinBox的绑定(就都合作都cheat的val应该是相等的)，所以需要在外面绑定好
-    Player_slider=ui->Player_slider;
-    ElimNum_slider=ui->ElimNum_slider;
-    NumGame_slider=ui->NumGame_slider;
-    Prob_slider=ui->Prob_slider;
-    ValMatrix_spinbox={{{QSharedPointer<QSpinBox>::create(),\
-                           QSharedPointer<QSpinBox>::create()},\
-                          {QSharedPointer<QSpinBox>::create(),\
-                           QSharedPointer<QSpinBox>::create()}},\
-                         {{QSharedPointer<QSpinBox>::create(),\
-                           QSharedPointer<QSpinBox>::create()},\
-                          {QSharedPointer<QSpinBox>::create(),\
-                           QSharedPointer<QSpinBox>::create()}}};
-    Start_button=QSharedPointer<QPushButton>::create("START",this);//
-    Step_button=QSharedPointer<QPushButton>::create("STEP",this);//
-    Reset_button=QSharedPointer<QPushButton>::create("RESET",this);//
+    /*下面是原来文件的构造部分*/
+    // Player_slider=ui->Player_slider;
+    // ElimNum_slider=ui->ElimNum_slider;
+    // NumGame_slider=ui->NumGame_slider;
+    // Prob_slider=ui->Prob_slider;
+    // ValMatrix_spinbox={{{QSharedPointer<QSpinBox>::create(),\
+    //                        QSharedPointer<QSpinBox>::create()},\
+    //                       {QSharedPointer<QSpinBox>::create(),\
+    //                        QSharedPointer<QSpinBox>::create()}},\
+    //                      {{QSharedPointer<QSpinBox>::create(),\
+    //                        QSharedPointer<QSpinBox>::create()},\
+    //                       {QSharedPointer<QSpinBox>::create(),\
+    //                        QSharedPointer<QSpinBox>::create()}}};
+    // Start_button=QSharedPointer<QPushButton>::create("START",this);//
+    // Step_button=QSharedPointer<QPushButton>::create("STEP",this);//
+    // Reset_button=QSharedPointer<QPushButton>::create("RESET",this);//
     // resize(150,400);
     // move(0,0);
+
     Start_button->move(50,30);
     Step_button->move(50,130);
     Reset_button->move(50,230);
-    auto tmp = new QLabel("TOURNAMENT",this);
+    //auto tmp = new QLabel("TOURNAMENT",this);
 
     Worker=new Tournament_Worker(PlayerNum,this);//前面的变量初始化之后调用一次Update函数就好了
     mutex=QSharedPointer<QMutex>::create();
@@ -58,8 +60,8 @@ Tournament::Tournament(Sandbox_ui* ui,QWidget *parent)
     //PlayerNum-Slider的信号链接
     PlayerTypeNum_signal = QSharedPointer<QSignalMapper>::create(this);
     for(int i=0;i<type_number;++i){
-        PlayerTypeNum_signal->setMapping(Player_slider[i].data(),i);
-        connect(Player_slider[i].data(),&QSlider::valueChanged,PlayerTypeNum_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+        PlayerTypeNum_signal->setMapping(Player_slider[i],i);
+        connect(Player_slider[i],&QSlider::valueChanged,PlayerTypeNum_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
     }
     connect(PlayerTypeNum_signal.data(),&QSignalMapper::mappedInt,this,&Tournament::PlayerNum_Change);
     //连接到Control_signal上
@@ -70,8 +72,8 @@ Tournament::Tournament(Sandbox_ui* ui,QWidget *parent)
     for(int i=0;i<2;++i){
         for(int j=0;j<2;++j){
             for(int k=0;k<2;++k){
-                ValMatrix_signal->setMapping(ValMatrix_spinbox[i][j][k].data(),4*i+2*j+k);
-                connect(ValMatrix_spinbox[i][j][k].data(),static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),ValMatrix_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+                ValMatrix_signal->setMapping(ValMatrix_spinbox[i][j][k],4*i+2*j+k);
+                connect(ValMatrix_spinbox[i][j][k],static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),ValMatrix_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
             }
         }
     }
@@ -79,12 +81,12 @@ Tournament::Tournament(Sandbox_ui* ui,QWidget *parent)
 
     //rule部分
     Rule_signal = QSharedPointer<QSignalMapper>::create(this);
-    Rule_signal->setMapping(NumGame_slider.data(),0);
-    Rule_signal->setMapping(ElimNum_slider.data(),1);
-    Rule_signal->setMapping(Prob_slider.data(),2);
-    connect(NumGame_slider.data(),&QSlider::valueChanged,Rule_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
-    connect(ElimNum_slider.data(),&QSlider::valueChanged,Rule_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
-    connect(Prob_slider.data(),&QSlider::valueChanged,Rule_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    Rule_signal->setMapping(NumGame_slider,0);
+    Rule_signal->setMapping(ElimNum_slider,1);
+    Rule_signal->setMapping(Prob_slider,2);
+    connect(NumGame_slider,&QSlider::valueChanged,Rule_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    connect(ElimNum_slider,&QSlider::valueChanged,Rule_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    connect(Prob_slider,&QSlider::valueChanged,Rule_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
     connect(Rule_signal.data(),&QSignalMapper::mappedInt,this,&Tournament::Rule_Change);
 
     //Update_signal的链接
@@ -94,10 +96,10 @@ Tournament::Tournament(Sandbox_ui* ui,QWidget *parent)
     Control_signal=QSharedPointer<QSignalMapper>::create(this);
 
     connect(this,&Tournament::Connect_signal,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
-    connect(Start_button.data(),&QPushButton::clicked,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
-    connect(Step_button.data(),&QPushButton::clicked,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
-    Control_signal->setMapping(Start_button.data(),0);
-    Control_signal->setMapping(Step_button.data(),1);
+    connect(Start_button,&QPushButton::clicked,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    connect(Step_button,&QPushButton::clicked,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    Control_signal->setMapping(Start_button,0);
+    Control_signal->setMapping(Step_button,1);
     Control_signal->setMapping(this,2);//PlayerTypeNum的信号
     connect(Control_signal.data(),&QSignalMapper::mappedInt,Worker,&Tournament_Worker::Button_OnPush);
     // connect(this,&Tournament::Connect_signal,Worker,[&](){Worker->Button_OnPush(0);});
@@ -105,7 +107,7 @@ Tournament::Tournament(Sandbox_ui* ui,QWidget *parent)
     // connect(Step_button.data(),&QPushButton::clicked,Worker,[&](){Worker->Button_OnPush(2);});
     // connect(Start_button.data(),&QPushButton::clicked,Worker,[=](){qDebug()<<"START PRESSED";});
 
-    connect(Reset_button.data(),&QPushButton::clicked,this,&Tournament::reset);
+    connect(Reset_button,&QPushButton::clicked,this,&Tournament::reset);
 
     reset();
 }
@@ -156,7 +158,7 @@ void Tournament::one_vs_all(int id){
 
 QVector<int> Tournament::PlayerNum_Change(int index){
     QMutexLocker locker(mutex.data());
-    int new_data=Player_slider[index].data()->value();
+    int new_data=Player_slider[index]->value();
     if(new_data==PlayerTypeNum_cache[index]) return QVector<int>(PlayerTypeNum_cache);
     std::shuffle(Order_change.begin(),Order_change.end(),std::mt19937(std::random_device{}()));
 
@@ -191,7 +193,7 @@ QVector<int> Tournament::PlayerNum_Change(int index){
 void Tournament::ValueMatrix_Change(unsigned int index){
     QMutexLocker locker(mutex.data());
     int i=(index>>2)&1,j=(index>>1)&1,k=index&1;
-    ValMatrix_cache[i][j][k]=ValMatrix_spinbox[i][j][k].data()->value();
+    ValMatrix_cache[i][j][k]=ValMatrix_spinbox[i][j][k]->value();
     for(int i=0;i<2;++i)
         for(int j=0;j<2;++j)
             judge->reward_reset(i,j,ValMatrix_cache[i][j][i],ValMatrix_cache[i][j][j]);
@@ -202,13 +204,13 @@ void Tournament::Rule_Change(int index){
     QMutexLocker locker(mutex.data());
     switch(index){
     case 0:
-        num_games_cache=NumGame_slider.data()->value();
+        num_games_cache=NumGame_slider->value();
         break;
     case 1:
-        Elim_num_cache=ElimNum_slider.data()->value();
+        Elim_num_cache=ElimNum_slider->value();
         break;
     case 2:
-        Probility_cache=Prob_slider.data()->value();
+        Probility_cache=Prob_slider->value();
     }
     return ;
 }

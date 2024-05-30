@@ -12,10 +12,10 @@ class slider : public QWidget
     Q_OBJECT
 
 public:
-    explicit slider(int type_id,int default_val = 0,QWidget *parent = nullptr);
+    explicit slider(QWidget *parent = nullptr);
     ~slider();
 
-public:
+private:
     Ui::slider *ui;
 };
 

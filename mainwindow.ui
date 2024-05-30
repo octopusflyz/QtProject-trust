@@ -30,8 +30,7 @@
     <widget class="pg_rules" name="page_2"/>
     <widget class="pg_twoplayers" name="page_3"/>
     <widget class="pg_tournament" name="page_4"/>
-    <widget class="pg_sandbox" name="page_6"/>
-    <widget class="QWidget" name="page_5"/>
+    <widget class="pg_allplayers" name="page_5"/>
    </widget>
    <widget class="QPushButton" name="welcomeButton">
     <property name="geometry">
@@ -105,7 +104,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>
@@ -137,9 +136,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>pg_sandbox</class>
+   <class>pg_allplayers</class>
    <extends>QWidget</extends>
-   <header>pg_sandbox.h</header>
+   <header>pg_allplayers.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

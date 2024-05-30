@@ -83,6 +83,11 @@ public:
     QSharedPointer<QSignalMapper> PlayerTypeNum_signal;
     QVector<int> Order_change;//辅助量，用于PlayerNum_Change函数
 
+    QVector<QLineF*> connections;
+    void clear_connections();
+    int highlight_index;
+    void paintEvent(QPaintEvent* event);
+
 
     //value-matrix部分
     QSharedPointer<Judge> judge;

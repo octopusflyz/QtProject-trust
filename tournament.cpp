@@ -1,5 +1,7 @@
 #include "tournament.h"
 //#include "sandbox_ui.h"
+#include <QPainter>
+const double TAU = acos(-1)*2;
 
 int Tournament::type_number = 4;
 QVector<int> Tournament::Init_PlayerTypeNum={3,3,3,3};
@@ -179,10 +181,6 @@ Tournament::~Tournament(){
     delete Worker;
 }
 
-Tournament::~Tournament(){
-    delete Worker;
-}
-
 void Tournament::reset(){
     QMutexLocker locker(mutex.data());
     judge.reset(new Judge(this));
@@ -297,6 +295,14 @@ void Tournament::Update(){
     return ;
 }
 
+void Tournament::paintEvent(QPaintEvent* event){
+    QPainter painter(this);
+    painter.setPen(QPen(Qt::gray,3));
+    QList<QLineF> tmp;
+    for(auto i:connections) tmp.push_back(*i);
+    painter.drawLines(tmp);
+}
+
 void Tournament::display_log(){
     qDebug()<<"-------------------------------";
     qDebug()<< judge->prev_opponent;
@@ -326,11 +332,16 @@ void Tournament_Worker::reset(){
     continue_flag=false;
     step_flag=false;
     player_pool.clear();
+    tournament->clear_connections();
     Winner_list.clear();
     Elim_list.clear();
     judge.reset(new Judge()); // TO CHECK!!!!
     emit Update_signal();
     return;
+}
+
+inline double calculate_angle(double t){
+    return t*TAU-TAU/4;
 }
 
 void Tournament_Worker::LetThemIn(){
@@ -340,6 +351,15 @@ void Tournament_Worker::LetThemIn(){
         for(int j=0;j<PlayerTypeNum[1];++j) player_pool.append(QSharedPointer<Player>(new Player_Cheater(tournament)));
         for(int j=0;j<PlayerTypeNum[2];++j) player_pool.append(QSharedPointer<Player>(new Player_Copy_Cat(tournament)));
         for(int j=0;j<PlayerTypeNum[3];++j) player_pool.append(QSharedPointer<Player>(new Player_Random(tournament)));
+        for(int i=0;i<player_pool.length();++i) player_pool[i]->init(i,true);
+        for(int i=0;i<player_pool.length();i++) player_pool[i]->set_angle(((double)i)/player_pool.length());
+        for(int i=0;i<player_pool.length();i++){
+            for(int j=i+1;j<player_pool.length();j++){
+                tournament->connections.push_back(new QLineF(player_pool[i]->rect().center(),player_pool[j]->rect().center()));
+                player_pool[i]->add_connection(tournament->connections.back(),1);
+                player_pool[j]->add_connection(tournament->connections.back(),2);
+            }
+        }
         return ;
     }
     int input_num=0;
@@ -347,14 +367,27 @@ void Tournament_Worker::LetThemIn(){
         if((*it)->get_type()==ELIMINATION){
             (*it)=Winner_list[input_num]->clone();
             ++input_num;
+            for(auto ittt=player_pool.begin();it!=player_pool.end();ittt++){
+                if((*ittt)->get_type()==ELIMINATION) continue;
+                tournament->connections.push_back(new QLineF((*it)->rect().center(),(*ittt)->rect().center()));
+                (*it)->add_connection(tournament->connections.back(),1);
+                (*ittt)->add_connection(tournament->connections.back(),2);
+            }
         }
     }
     std::stable_sort(player_pool.begin(),player_pool.end(),PlayerPtrType_Compare);
+    for(int i=0;i<player_pool.length();++i) player_pool[i]->init(i,true);//希望我没理解错这个函数的意思(
+    for(int i=0;i<player_pool.length();i++) player_pool[i]->goto_angle(((double)i)/player_pool.length());
     return ;
 }
 
 void Tournament_Worker::Competition(){
-    for(int i=0;i<player_pool.length();++i) player_pool[i]->init(i,true);//希望我没理解错这个函数的意思(
+    for(int i=0;i<player_pool.length();i++){
+        tournament->highlight_index = i;
+        tournament->update();
+        QThread::sleep(25);
+    }
+    tournament->highlight_index=-1;
     for(int i=0;i<player_pool.length()-1;++i)
         for(int j=i+1;j<player_pool.length();++j)
             one_vs_one(i,j);
@@ -370,7 +403,7 @@ void Tournament_Worker::KickThemOut(){
     QList<QSharedPointer<Player>> lst=player_pool;
     std::sort(lst.begin(),lst.end(),PlayerPtrScore_Compare);
     Elim_list.append(lst.mid(lst.length()-Elim_num,Elim_num));
-    for(int i=0;i<Elim_num;++i) Elim_list[i]->get_type()=ELIMINATION;
+    for(int i=0;i<Elim_num;++i){Elim_list[i]->get_type()=ELIMINATION;Elim_list[i]->eliminate();}
     return;
 }
 

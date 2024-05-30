@@ -48,6 +48,195 @@
     <string>Cooperate</string>
    </property>
   </widget>
+  <widget class="QLabel" name="left">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>260</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/creature.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right">
+   <property name="geometry">
+    <rect>
+     <x>575</x>
+     <y>260</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/copycat_right.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="coin_left">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>300</y>
+     <width>50</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/coin.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="coin_right">
+   <property name="geometry">
+    <rect>
+     <x>565</x>
+     <y>300</y>
+     <width>50</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/coin.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="machine">
+   <property name="geometry">
+    <rect>
+     <x>74</x>
+     <y>130</y>
+     <width>598</width>
+     <height>417</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/machine_update.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="machine_00">
+   <property name="geometry">
+    <rect>
+     <x>74</x>
+     <y>130</y>
+     <width>598</width>
+     <height>417</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/machine_00.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="machine_10">
+   <property name="geometry">
+    <rect>
+     <x>74</x>
+     <y>130</y>
+     <width>598</width>
+     <height>417</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/machine_10.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="machine_01">
+   <property name="geometry">
+    <rect>
+     <x>74</x>
+     <y>130</y>
+     <width>598</width>
+     <height>417</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/machine_01.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="machine_11">
+   <property name="geometry">
+    <rect>
+     <x>74</x>
+     <y>130</y>
+     <width>598</width>
+     <height>417</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/machine_11.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left_sad">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>255</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/sad.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right_cheater">
+   <property name="geometry">
+    <rect>
+     <x>575</x>
+     <y>260</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/cheater_right.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>machine_11</zorder>
+  <zorder>machine_10</zorder>
+  <zorder>machine_00</zorder>
+  <zorder>coin_left</zorder>
+  <zorder>coin_right</zorder>
+  <zorder>machine</zorder>
+  <zorder>cooperateButton</zorder>
+  <zorder>cheatButton</zorder>
+  <zorder>machine_01</zorder>
+  <zorder>right</zorder>
+  <zorder>left</zorder>
+  <zorder>left_sad</zorder>
+  <zorder>right_cheater</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -27,5 +27,11 @@
         <file>image/hat_copykitten.png</file>
         <file>image/hat_simpleton.png</file>
         <file>image/payoffs.png</file>
+        <file>image/copycat_right.png</file>
+        <file>image/hate.png</file>
+        <file>image/sad.png</file>
+        <file>image/excited.png</file>
+        <file>image/happy.png</file>
+        <file>image/cheater_right.png</file>
     </qresource>
 </RCC>

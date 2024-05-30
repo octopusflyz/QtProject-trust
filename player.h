@@ -73,4 +73,8 @@ bool PlayerScore_Compare(const Player& p1,const Player &p2);
 bool PlayerPtrType_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);
 bool PlayerPtrScore_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);
 
+bool PlayerType_Compare(const Player& p1,const Player &p2);
+bool PlayerScore_Compare(const Player& p1,const Player &p2);
+bool PlayerPtrType_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);
+bool PlayerPtrScore_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);
 #endif // PLAYER_H

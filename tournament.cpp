@@ -110,6 +110,73 @@ Tournament::Tournament(/*Sandbox_ui,*/QWidget *parent)
     connect(Reset_button,&QPushButton::clicked,this,&Tournament::reset);
 
     reset();
+    //我不知道怎么留构造函数的接口比较方便
+    //下面是所有变量都已经定义好了之后各个信号和槽之间的链接关系的一个实现
+    //注意：我没有写QSpinBox的绑定(就都合作都cheat的val应该是相等的)，所以需要在外面绑定好
+
+    Worker=new Tournament_Worker(PlayerNum);//前面的变量初始化之后调用一次Update函数就好了
+    mutex=QSharedPointer<QMutex>::create();
+    //update_mutex=QSharedPointer<QMutex>::create();
+    Worker_Thread=QSharedPointer<QThread>::create(this);
+    Worker->mutex=mutex;
+    //Worker->update_mutex=update_mutex;
+    Worker->moveToThread(Worker_Thread.data());//移动到新线程中
+
+    Order_change.resize(type_number);
+    for(int i=0;i<type_number;++i) Order_change.append(i);
+
+    //PlayerNum-Slider的信号链接
+    PlayerTypeNum_signal = QSharedPointer<QSignalMapper>::create(this);
+    for(int i=0;i<type_number;++i){
+        PlayerTypeNum_signal->setMapping(Player_slider[i].data(),i);
+        connect(Player_slider[i].data(),&QSlider::valueChanged,PlayerTypeNum_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    }
+    connect(PlayerTypeNum_signal.data(),&QSignalMapper::mappedInt,this,&Tournament::PlayerNum_Change);
+    //连接到Control_signal上
+    connect(PlayerTypeNum_signal.data(),&QSignalMapper::mappedInt,this,&Tournament::Connect_signal);
+
+    //value-matrix的信号链接
+    ValMatrix_signal = QSharedPointer<QSignalMapper>::create(this);
+    for(int i=0;i<2;++i){
+        for(int j=0;j<2;++j){
+            for(int k=0;k<2;++k){
+                ValMatrix_signal->setMapping(ValMatrix_spinbox[i][j][k].data(),4*i+2*j+k);
+                connect(ValMatrix_spinbox[i][j][k].data(),static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),ValMatrix_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+            }
+        }
+    }
+    connect(ValMatrix_signal.data(),&QSignalMapper::mappedInt,this,&Tournament::ValueMatrix_Change);
+
+    //rule部分
+    Rule_signal = QSharedPointer<QSignalMapper>::create(this);
+    Rule_signal->setMapping(NumGame_slider.data(),0);
+    Rule_signal->setMapping(ElimNum_slider.data(),1);
+    Rule_signal->setMapping(Prob_slider.data(),2);
+    connect(NumGame_slider.data(),&QSlider::valueChanged,Rule_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    connect(ElimNum_slider.data(),&QSlider::valueChanged,Rule_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    connect(Prob_slider.data(),&QSlider::valueChanged,Rule_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    connect(Rule_signal.data(),&QSignalMapper::mappedInt,this,&Tournament::Rule_Change);
+
+    //Update_signal的链接
+    connect(Worker,&Tournament_Worker::Update_signal,this,&Tournament::Update);
+
+    //控制部分的信号链接
+    Control_signal=QSharedPointer<QSignalMapper>::create(this);
+    Control_signal->setMapping(Start_button.data(),0);
+    Control_signal->setMapping(Step_button.data(),1);
+
+
+    Control_signal->setMapping(this,2);//PlayerTypeNum的信号
+    connect(this,&Tournament::Connect_signal,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    connect(Start_button.data(),&QPushButton::clicked,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    connect(Step_button.data(),&QPushButton::clicked,Control_signal.data(),static_cast<void(QSignalMapper::*)()>(&QSignalMapper::map));
+    connect(Control_signal.data(),&QSignalMapper::mappedInt,Worker,&Tournament_Worker::Button_OnPush);
+
+    connect(Reset_button.data(),&QPushButton::clicked,this,&Tournament::reset);
+}
+
+Tournament::~Tournament(){
+    delete Worker;
 }
 
 Tournament::~Tournament(){

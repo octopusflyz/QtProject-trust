@@ -15,6 +15,7 @@ public:
     explicit pg_allplayers(QWidget *parent = nullptr);
     ~pg_allplayers();
 
+
 private:
     Ui::pg_allplayers *ui;
 };

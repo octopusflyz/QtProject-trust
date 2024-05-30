@@ -13,7 +13,6 @@ public:
     int curr_id;
     int score;
     int probility;
-    //@sms-hty i would implement the mistakes-making part in judge
     int type;//排序用的,=ELIMINATION(10)表示淘汰
     QString name;
     virtual void init(int id,bool hard = false);
@@ -69,6 +68,10 @@ public:
     virtual QSharedPointer<Player> clone();
     virtual int choice(const QList< Match_Result > & history);
 };
+bool PlayerType_Compare(const Player& p1,const Player &p2);
+bool PlayerScore_Compare(const Player& p1,const Player &p2);
+bool PlayerPtrType_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);
+bool PlayerPtrScore_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);
 
 bool PlayerType_Compare(const Player& p1,const Player &p2);
 bool PlayerScore_Compare(const Player& p1,const Player &p2);

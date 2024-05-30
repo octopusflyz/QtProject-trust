@@ -1,7 +1,7 @@
 #include "slider.h"
 #include "ui_slider.h"
 
-slider::slider(QWidget *parent)
+slider::slider(int type_id,int default_val, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::slider)
 {

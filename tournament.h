@@ -11,6 +11,7 @@
 #include <QRandomGenerator>
 #include <QPushButton>
 #include "judge.h"
+#include "pg_allplayers.h"
 
 class Tournament;
 
@@ -34,7 +35,7 @@ public:
     QVector<int> PlayerTypeNum;//各个类别选手的数量
 
     //ValMatrix
-    QVector<QVector<QVector<int>>> ValMatrix;//mat(i,j,k)表示在双方的(i,j)选择下选择k的得分
+    QVector<QVector<QVector<int>>> ValMatrix;//mat(i,j,k)表示在双方的(i,j)选择下选择k的得分(0-left 1-right)
 
     //rule:
     int num_games;//每场锦标赛的轮数
@@ -69,7 +70,7 @@ class Tournament : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Tournament(/*Sandbox_ui* ui,*/QWidget *parent = nullptr);
+    explicit Tournament(pg_allplayers* mui,QWidget *parent = nullptr);
     ~Tournament();
     QSharedPointer<QMutex> mutex;
     //QSharedPointer<QMutex> update_mutex;
@@ -80,6 +81,7 @@ public:
     static QVector<int> Init_PlayerTypeNum;//我随便设的，看你们ui怎么设置比较方便
     QVector<int> PlayerTypeNum_cache;//各个类别选手的数量
     QVector<QSlider*> Player_slider;//选手类别的滑动条
+    QVector<slider*> Player_slider_ui;
     QSharedPointer<QSignalMapper> PlayerTypeNum_signal;
     QVector<int> Order_change;//辅助量，用于PlayerNum_Change函数
 
@@ -125,7 +127,7 @@ public:
 
 public slots:
     //注：所有的change函数都只负责对cache更新，当耗时运算完成后会emit更新信号完成更新
-    QVector<int> PlayerNum_Change(int index);//选手类别人数变更槽函数
+    void PlayerNum_Change(int index);//选手类别人数变更槽函数
     void ValueMatrix_Change(unsigned int index);//价值矩阵的更改(index为一个3位2进制数代表(i,j,k))
     void Rule_Change(int index);//rule部分改变的函数
 

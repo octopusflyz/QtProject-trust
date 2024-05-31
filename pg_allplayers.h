@@ -2,7 +2,7 @@
 #define PG_ALLPLAYERS_H
 
 #include <QWidget>
-
+#include "slider.h"
 namespace Ui {
 class pg_allplayers;
 }
@@ -16,7 +16,7 @@ public:
     ~pg_allplayers();
 
 
-private:
+//private:
     Ui::pg_allplayers *ui;
 };
 

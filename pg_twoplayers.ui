@@ -288,6 +288,70 @@
     <string/>
    </property>
   </widget>
+  <widget class="QLabel" name="score_user">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>90</y>
+     <width>61</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="score_opponent">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>90</y>
+     <width>61</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left_excited">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>255</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/excited.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left_hate">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>255</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/hate.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <zorder>machine_11</zorder>
   <zorder>machine_10</zorder>
   <zorder>machine_00</zorder>
@@ -305,6 +369,10 @@
   <zorder>right_cooperator</zorder>
   <zorder>right_grudger</zorder>
   <zorder>right_detective</zorder>
+  <zorder>score_user</zorder>
+  <zorder>score_opponent</zorder>
+  <zorder>left_excited</zorder>
+  <zorder>left_hate</zorder>
  </widget>
  <resources/>
  <connections/>

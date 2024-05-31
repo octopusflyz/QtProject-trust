@@ -36,5 +36,9 @@
         <file>image/cooperator_right.png</file>
         <file>image/detective_right.png</file>
         <file>image/grudger_right.png</file>
+        <file>image/copycat_excited.png</file>
+        <file>image/copycat_happy.png</file>
+        <file>image/copycat_hate.png</file>
+        <file>image/copycat_sad.png</file>
     </qresource>
 </RCC>

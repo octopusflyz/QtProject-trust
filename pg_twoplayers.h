@@ -34,7 +34,8 @@ public:
     void fourth_opponent();
     void fifth_opponent();
     void right_opponent(QLabel* opponent);
-
+    void reaction(QLabel* opponent,MatchResult& result);
+    void opponent_reaction(QLabel* opponent,MatchResult& result);
 
 private slots:
     void on_cheatButton_clicked();
@@ -45,18 +46,19 @@ private:
     int round=0;
     Ui::pg_twoplayers *ui;
     QSequentialAnimationGroup *Group;
-     QSequentialAnimationGroup *Group_2;
+   //  QSequentialAnimationGroup *Group_2;
     QParallelAnimationGroup *forwardGroup;
-    QParallelAnimationGroup *forwardGroup_3;
+   // QParallelAnimationGroup *forwardGroup_3;
     QParallelAnimationGroup *backwardGroup;
-     QParallelAnimationGroup *backwardGroup_3;
+    // QParallelAnimationGroup *backwardGroup_3;
 
-    QPropertyAnimation* user;
-    QPropertyAnimation* animation_b;
+    QPropertyAnimation* user_f;
+    QPropertyAnimation* user_b;
     QPropertyAnimation* opponent_f;
-    QPropertyAnimation* animation_3;
     QPropertyAnimation* opponent_b;
-    QPropertyAnimation* cheater_2b;
+    //QPropertyAnimation* animation_3;
+
+    //QPropertyAnimation* cheater_2b;
     QPropertyAnimation* coin_animation;
     QPropertyAnimation* coin_animation1;
     QPropertyAnimation* coin_animationb;

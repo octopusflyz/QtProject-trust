@@ -17,12 +17,16 @@ pg_twoplayers::pg_twoplayers(QWidget *parent)
     ui->machine_10->hide();
     ui->machine_11->hide();
     ui->left_sad->hide();
-    ui->left_happy->hide();
+    ui->left_hate->hide();
+     ui->left_excited->hide();
+     ui->left_happy->hide();
+
     ui->right_cheater->hide();
     ui->right_cooperator->hide();
     ui->right_grudger->hide();
     ui->right_detective->hide();
 }
+//opponent的移动&组合
 void pg_twoplayers::right_opponent(QLabel* opponent){
     //右人
     opponent_f =new QPropertyAnimation(opponent,"geometry");
@@ -47,43 +51,47 @@ void pg_twoplayers::right_opponent(QLabel* opponent){
 
     //并行
     forwardGroup= new QParallelAnimationGroup(this);
-    forwardGroup->addAnimation(user);
+    forwardGroup->addAnimation(user_f);
     forwardGroup->addAnimation(opponent_f);
     forwardGroup->addAnimation(coin_animation);
     forwardGroup->addAnimation(coin_animation1);
     //并行
     backwardGroup= new QParallelAnimationGroup(this);
-    backwardGroup->addAnimation(animation_b);
+    backwardGroup->addAnimation(user_b);
     backwardGroup->addAnimation(opponent_b);
     backwardGroup->addAnimation(coin_animationb);
     backwardGroup->addAnimation(coin_animation1b);
     //整动画
     Group =new QSequentialAnimationGroup(this);
     Group->addAnimation(forwardGroup);
-    Group->addPause(500);
+    Group->addPause(1000);
     Group->addAnimation(backwardGroup);
     Group->start();
 
-    //连接变化
     connect(coin_animation,&QPropertyAnimation::finished,this,[=](){
-        ui->machine->hide();
-        // if(players[0]->choice(history)==1&&players[1]->choice(history)==0){
-        ui->machine_00->show();
-        ui->left->hide();
-        ui->left_sad->setGeometry(QRect(140,260,120,160));
-        ui->left_sad->show();
-
-        // }
-        // else if(players[0]->choice(history)==1&&players[1]->choice(history)==0){
-        //     ui->machine_10->show();
-        // }
-        // else if(players[0]->choice(history)==0&&players[1]->choice(history)==1){
-        //     ui->machine_10->show();
-        // }
-        // else if(players[0]->choice(history)==1&&players[1]->choice(history)==1){
-        //      ui->machine_10->show();
-        // }
+      reaction(opponent,result);
     });
+
+    // //连接变化
+    // connect(coin_animation,&QPropertyAnimation::finished,this,[=](){
+    //     ui->machine->hide();
+    //     // if(players[0]->choice(history)==1&&players[1]->choice(history)==0){
+    //     ui->machine_00->show();
+    //     ui->left->hide();
+    //     ui->left_sad->setGeometry(QRect(140,260,120,160));
+    //     ui->left_sad->show();
+
+    //     // }
+    //     // else if(players[0]->choice(history)==1&&players[1]->choice(history)==0){
+    //     //     ui->machine_10->show();
+    //     // }
+    //     // else if(players[0]->choice(history)==0&&players[1]->choice(history)==1){
+    //     //     ui->machine_10->show();
+    //     // }
+    //     // else if(players[0]->choice(history)==1&&players[1]->choice(history)==1){
+    //     //      ui->machine_10->show();
+    //     // }
+    // });
     connect(coin_animationb,&QPropertyAnimation::finished,this,[=](){
         ui->machine->show();
         ui->machine_00->hide();
@@ -95,19 +103,53 @@ void pg_twoplayers::right_opponent(QLabel* opponent){
         ui->left->show();
     });
 }
-// void pg_twoplayers::reaction(QLabel* player,MatchResult){
 
-// }
+//根据result变化
+void pg_twoplayers::reaction(QLabel* opponent,MatchResult& result){
+        ui->machine->hide();
+        if(result.action[0]==0&&result.action[1]==0){
+        ui->machine_00->show();
+        ui->left->hide();
+        ui->left_sad->setGeometry(QRect(140,260,120,160));
+        ui->left_sad->show();
+        }
+        else if(result.action[0]==1&&result.action[1]==0){
+            ui->machine_10->show();
+            ui->left->hide();
+        ui->left_excited->setGeometry(QRect(140,260,120,160));
+        ui->left_excited->show();
+        }
+        else if(result.action[0]==0&&result.action[1]==1){
+            ui->machine_01->show();
+            ui->left->hide();
+        ui->left_hate->setGeometry(QRect(140,260,120,160));
+        ui->left_hate->show();
+        }
+        else if(result.action[0]==1&&result.action[1]==1){
+             ui->machine_11->show();
+             ui->left->hide();
+             ui->left_happy->setGeometry(QRect(140,260,120,160));
+             ui->left_happy->show();
+        }
+        opponent_reaction(opponent,result);
+
+}
+
+void pg_twoplayers::opponent_reaction(QLabel* player,MatchResult& result){
+
+}
+
+//金币左人移动same
 void pg_twoplayers::same_part(){
     /****前进*****/
     //左人
-    user =new QPropertyAnimation(ui->left,"geometry");
-    user->setStartValue(QRect(50,260,120,160));
-    user->setKeyValueAt(0.25,QRect(72.5,250,120,160));
-    user->setKeyValueAt(0.5,QRect(95,260,120,160));
-    user->setKeyValueAt(0.75,QRect(117.5,250,120,160));
-    user->setEndValue(QRect(140,260,120,160));
-    user->setDuration(500);
+    user_f =new QPropertyAnimation(ui->left,"geometry");
+    user_f->setStartValue(QRect(50,260,120,160));
+    user_f->setKeyValueAt(0.25,QRect(72.5,250,120,160));
+    user_f->setKeyValueAt(0.5,QRect(95,260,120,160));
+    user_f->setKeyValueAt(0.75,QRect(117.5,250,120,160));
+    user_f->setEndValue(QRect(140,260,120,160));
+    user_f->setDuration(500);
     //左硬币
     coin_animation =new QPropertyAnimation(ui->coin_left,"geometry");
     coin_animation->setStartValue(QRect(130,300,50,70));
@@ -128,14 +170,14 @@ void pg_twoplayers::same_part(){
     coin_animation1->setDuration(1000);
     /*****后退*********/
     //左人
-    animation_b =new QPropertyAnimation(ui->left_sad,"geometry");
-    animation_b->setStartValue(QRect(140,260,120,160));
-    animation_b->setKeyValueAt(0.5,QRect(140,260,120,160));
-    animation_b->setKeyValueAt(0.625,QRect(117.5,250,120,160));
-    animation_b->setKeyValueAt(0.75,QRect(95,260,120,160));
-    animation_b->setKeyValueAt(0.875,QRect(72.5,250,120,160));
-    animation_b->setEndValue(QRect(50,260,120,160));
-    animation_b->setDuration(1000);
+    user_b =new QPropertyAnimation(ui->left,"geometry");
+    user_b->setStartValue(QRect(140,260,120,160));
+    user_b->setKeyValueAt(0.5,QRect(140,260,120,160));
+    user_b->setKeyValueAt(0.625,QRect(117.5,250,120,160));
+    user_b->setKeyValueAt(0.75,QRect(95,260,120,160));
+    user_b->setKeyValueAt(0.875,QRect(72.5,250,120,160));
+    user_b->setEndValue(QRect(50,260,120,160));
+    user_b->setDuration(1000);
     //左硬币
     coin_animationb =new QPropertyAnimation(ui->coin_left,"geometry");
     coin_animationb->setStartValue(QRect(250,350,50,70));
@@ -158,12 +200,14 @@ void pg_twoplayers::same_part(){
 
 
 }
+
 void pg_twoplayers::first_opponent(){
     ui->right_cheater->hide();
     same_part();
     right_opponent(ui->right_copycat);
     //qDebug()<<"in";
 }
+
 void pg_twoplayers::second_opponent(){
     ui->right_cheater->show();
     ui->right_copycat->hide();
@@ -171,6 +215,7 @@ void pg_twoplayers::second_opponent(){
     right_opponent(ui->right_cheater);
     //qDebug()<<"in";
 }
+
 void pg_twoplayers::third_opponent(){
     ui->right_cooperator->show();
     ui->right_cheater->hide();
@@ -178,6 +223,7 @@ void pg_twoplayers::third_opponent(){
     right_opponent(ui->right_cooperator);
     //qDebug()<<"in";
 }
+
 void pg_twoplayers::fourth_opponent(){
     ui->right_grudger->show();
     ui->right_cooperator->hide();
@@ -185,6 +231,7 @@ void pg_twoplayers::fourth_opponent(){
     right_opponent(ui->right_grudger);
     //qDebug()<<"in";
 }
+
 void pg_twoplayers::fifth_opponent(){
     ui->right_detective->show();
     ui->right_grudger->hide();
@@ -192,11 +239,16 @@ void pg_twoplayers::fifth_opponent(){
     right_opponent(ui->right_detective);
     //qDebug()<<"in";
 }
+
+
+
+
 //注释掉的没有应用功能，只是记录下调试的位置，懒得再找了
+
 void pg_twoplayers::paintEvent(QPaintEvent *event){
     QPainter painter(this);
         //文字
-        QRect rec(169,20,399,208);
+        QRect rec(169,10,399,208);
         painter.drawPixmap(rec,QPixmap(":/image/what to do.png"));
     //     //操作黑盒
     //     QRect rec3(74,120,598,417);
@@ -283,9 +335,6 @@ void pg_twoplayers::paintEvent(QPaintEvent *event){
 
         // }
 }
-
-
-
 
 
 pg_twoplayers::~pg_twoplayers()

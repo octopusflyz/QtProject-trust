@@ -64,7 +64,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="right">
+  <widget class="QLabel" name="right_copycat">
    <property name="geometry">
     <rect>
      <x>575</x>
@@ -224,6 +224,70 @@
     <string/>
    </property>
   </widget>
+  <widget class="QLabel" name="left_happy">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>255</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/happy.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right_cooperator">
+   <property name="geometry">
+    <rect>
+     <x>575</x>
+     <y>260</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/cooperator_right.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right_grudger">
+   <property name="geometry">
+    <rect>
+     <x>575</x>
+     <y>260</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/grudger_right.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right_detective">
+   <property name="geometry">
+    <rect>
+     <x>575</x>
+     <y>260</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/detective_right.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <zorder>machine_11</zorder>
   <zorder>machine_10</zorder>
   <zorder>machine_00</zorder>
@@ -233,10 +297,14 @@
   <zorder>cooperateButton</zorder>
   <zorder>cheatButton</zorder>
   <zorder>machine_01</zorder>
-  <zorder>right</zorder>
+  <zorder>right_copycat</zorder>
   <zorder>left</zorder>
   <zorder>left_sad</zorder>
   <zorder>right_cheater</zorder>
+  <zorder>left_happy</zorder>
+  <zorder>right_cooperator</zorder>
+  <zorder>right_grudger</zorder>
+  <zorder>right_detective</zorder>
  </widget>
  <resources/>
  <connections/>

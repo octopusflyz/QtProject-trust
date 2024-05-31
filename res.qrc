@@ -33,5 +33,8 @@
         <file>image/excited.png</file>
         <file>image/happy.png</file>
         <file>image/cheater_right.png</file>
+        <file>image/cooperator_right.png</file>
+        <file>image/detective_right.png</file>
+        <file>image/grudger_right.png</file>
     </qresource>
 </RCC>

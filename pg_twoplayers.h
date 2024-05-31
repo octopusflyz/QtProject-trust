@@ -5,6 +5,7 @@
 #include<QPropertyAnimation>
 #include<QAbstractAnimation>
 #include<QParallelAnimationGroup>
+#include<QLabel>
 
 namespace Ui {
 class pg_twoplayers;
@@ -26,9 +27,13 @@ public:
     // int px1=130,py1=300;
     // int px2=565,py2=300;
     // bool flag=0;//投币前
+    void same_part();
     void first_opponent();
     void second_opponent();
-
+    void third_opponent();
+    void fourth_opponent();
+    void fifth_opponent();
+    void right_opponent(QLabel* opponent);
 
 
 private slots:
@@ -48,9 +53,9 @@ private:
 
     QPropertyAnimation* user;
     QPropertyAnimation* animation_b;
-    QPropertyAnimation* animation_2;
+    QPropertyAnimation* opponent_f;
     QPropertyAnimation* animation_3;
-    QPropertyAnimation* copycat_2b;
+    QPropertyAnimation* opponent_b;
     QPropertyAnimation* cheater_2b;
     QPropertyAnimation* coin_animation;
     QPropertyAnimation* coin_animation1;

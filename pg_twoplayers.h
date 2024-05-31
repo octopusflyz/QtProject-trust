@@ -21,13 +21,7 @@ public:
     explicit pg_twoplayers(QWidget *parent = nullptr);
     ~pg_twoplayers();
     void paintEvent(QPaintEvent *event);
-    // //小人
-    // int posx1=50,posy1=260;
-    // int posx2=575,posy2=260;
-    // //金币
-    // int px1=130,py1=300;
-    // int px2=565,py2=300;
-    // bool flag=0;//投币前
+
     void same_part();
     void first_opponent();
     void second_opponent();
@@ -35,6 +29,8 @@ public:
     void fourth_opponent();
     void fifth_opponent();
     void right_opponent(QLabel* opponent);
+    void left_opponent();
+    void show_hat(QLabel* opponent);
    // void reaction(QLabel* opponent,MatchResult& result);
    // void opponent_reaction(QLabel* opponent,MatchResult& result);
 

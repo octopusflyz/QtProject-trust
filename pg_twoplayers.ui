@@ -352,6 +352,150 @@
     <string/>
    </property>
   </widget>
+  <widget class="QLabel" name="right_hate">
+   <property name="geometry">
+    <rect>
+     <x>485</x>
+     <y>250</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right_hate.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right_happy">
+   <property name="geometry">
+    <rect>
+     <x>485</x>
+     <y>250</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right_happy.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right_sad">
+   <property name="geometry">
+    <rect>
+     <x>485</x>
+     <y>250</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right_sad.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right_excited">
+   <property name="geometry">
+    <rect>
+     <x>485</x>
+     <y>250</y>
+     <width>120</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right_excited.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="cheater_h">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>220</y>
+     <width>121</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/cheater_hr.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="cooperator_h">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>220</y>
+     <width>121</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/cooperator_hr.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="copycat_h">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>200</y>
+     <width>121</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/copycat_hr.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="grudger_h">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>220</y>
+     <width>121</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/grudger_hr.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="detective_h">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>200</y>
+     <width>121</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/detective_hr.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <zorder>machine_11</zorder>
   <zorder>machine_10</zorder>
   <zorder>machine_00</zorder>
@@ -373,6 +517,15 @@
   <zorder>score_opponent</zorder>
   <zorder>left_excited</zorder>
   <zorder>left_hate</zorder>
+  <zorder>right_hate</zorder>
+  <zorder>right_happy</zorder>
+  <zorder>right_sad</zorder>
+  <zorder>right_excited</zorder>
+  <zorder>cheater_h</zorder>
+  <zorder>cooperator_h</zorder>
+  <zorder>copycat_h</zorder>
+  <zorder>grudger_h</zorder>
+  <zorder>detective_h</zorder>
  </widget>
  <resources/>
  <connections/>

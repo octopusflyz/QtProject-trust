@@ -44,5 +44,14 @@
         <file>image/copycat_lefthappy.png</file>
         <file>image/copycat_leftsad.png</file>
         <file>image/copycat_puzzle.png</file>
+        <file>image/right_excited.png</file>
+        <file>image/right_happy.png</file>
+        <file>image/right_hate.png</file>
+        <file>image/right_sad.png</file>
+        <file>image/cooperator_hr.png</file>
+        <file>image/copycat_hr.png</file>
+        <file>image/cheater_hr.png</file>
+        <file>image/detective_hr.png</file>
+        <file>image/grudger_hr.png</file>
     </qresource>
 </RCC>

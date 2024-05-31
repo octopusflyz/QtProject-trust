@@ -11,6 +11,7 @@ slider::slider(QWidget *parent)
     connect(ui->horizontalSlider,&QSlider::valueChanged,ui->spinBox,&QSpinBox::setValue);
 }
 
+
 slider::~slider()
 {
     delete ui;

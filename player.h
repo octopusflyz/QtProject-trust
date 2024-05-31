@@ -3,18 +3,42 @@
 
 #include <QWidget>
 #include <QString>
+#include <QLabel>
 #include "match_result.h"
 #define ELIMINATION 10
+
+
+
 class Player : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY(double angle READ angle WRITE set_angle NOTIFY angle_changed)
 public:
     explicit Player(QWidget *parent = nullptr);
     int curr_id;
     int score;
     int probility;
-    //@sms-hty i would implement the mistakes-making part in judge
     int type;//排序用的,=ELIMINATION(10)表示淘汰
+
+    //some ui parameters
+    static int graphics_radius, graphics_x,graphics_y; // with reference to Tournament
+    static int score_radius,score_x,score_y;//with reference to player;
+
+    double angle;
+    QLabel* graphics_label;
+    QLabel* score_label;
+    QImage* image;
+    void set_angle(double ang);
+    void goto_angle(double ang);
+    void load_image(QString file_name="");
+
+    QVector<QLineF*> connections;
+    void add_connection(QLineF* line,int id);
+    void clear_connection();
+
+    void eliminate();
+    void display_score();
+
     QString name;
     virtual void init(int id,bool hard = false);
     virtual int choice(const QList< Match_Result > & history) = 0;
@@ -26,7 +50,10 @@ public:
     friend bool PlayerScore_Compare(const Player& p1,const Player &p2);//按照score升序
     friend bool PlayerPtrType_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);//按照type降序
     friend bool PlayerPtrScore_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);//按照score升序
+public slots:
+    void update_position(double);
 signals:
+    void angle_changed(double);
 };
 
 class Player_Pair{
@@ -69,6 +96,10 @@ public:
     virtual QSharedPointer<Player> clone();
     virtual int choice(const QList< Match_Result > & history);
 };
+bool PlayerType_Compare(const Player& p1,const Player &p2);
+bool PlayerScore_Compare(const Player& p1,const Player &p2);
+bool PlayerPtrType_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);
+bool PlayerPtrScore_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);
 
 bool PlayerType_Compare(const Player& p1,const Player &p2);
 bool PlayerScore_Compare(const Player& p1,const Player &p2);

@@ -1,16 +1,87 @@
 #include "player.h"
 #include <QRandomGenerator>
+#include <QPropertyAnimation>
+
+int Player::graphics_radius = 200;
+int Player::graphics_x = 250;
+int Player::graphics_y = 265;
+int Player::score_radius = 50;
+int Player::score_x = 0;
+int Player::score_y = -22;
 
 Player::Player(QWidget *parent)
     : QWidget{parent}
 {
     curr_id=-1;
+    angle=0;
     score=0;
+    graphics_label = new QLabel(this);
+    score_label = new QLabel(this);
+    image = new QImage();
+    connect(this,&Player::angle_changed,this,&Player::update_position);
 }
 
 void Player::init(int id, bool hard /* = false*/){
     curr_id=id;
-    if (hard) score=0;
+    if (hard){
+        score=0;
+        score_label->setText("");
+        score_label->hide();
+        graphics_label->setPixmap(QPixmap::fromImage(*image));
+    }
+}
+
+void Player::set_angle(double ang){
+    angle = ang;
+}
+
+void Player::goto_angle(double ang){
+    auto anim = new QPropertyAnimation(this,"angle",this);
+    anim->setStartValue(angle);
+    anim->setEndValue(ang);
+    anim->setDuration(300);
+    anim->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+void Player::update_position(double){
+    move(cos(angle)*graphics_radius+graphics_x,sin(angle)*graphics_radius+graphics_y);
+    score_label->move(-cos(angle)*score_radius+score_x,-sin(angle)*score_radius+score_y);
+}
+
+void Player::load_image(QString file_name/* = "" */){
+    if(file_name=="") file_name=name;
+    image->load(":/image/"+file_name+".png");
+}
+
+void Player::add_connection(QLineF* line,int id){//id=1:from && id=2:to
+    connections.push_back(line);
+    if(id==1){
+        connect(this,&Player::angle_changed,[&](double){line->setP1(this->rect().center());});
+    }
+    else{
+        connect(this,&Player::angle_changed,[&](double){line->setP2(this->rect().center());});
+    }
+}
+
+void Player::clear_connection(){
+    for(auto l:connections) l->setLine(0,0,0,0);
+    connections.clear();
+}
+
+void Player::eliminate(){
+    clear_connection();
+    score_label->hide();
+    auto anim = new QPropertyAnimation(graphics_label,"pos",this);
+    anim->setStartValue(graphics_label->rect());
+    double dis = QRandomGenerator::global()->generateDouble()*20;
+    anim->setEndValue(QRectF(graphics_label->rect().topLeft()+QPointF(cos(angle)*dis,sin(angle)*dis),QSize(0,0)));
+    connect(anim,&QPropertyAnimation::finished,[=](){this->hide();});
+    anim->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+void Player::display_score(){
+    score_label->setNum(score);
+    score_label->show();
 }
 
 void Player::update_score(int s){
@@ -40,12 +111,15 @@ int Player::random_mistake(int choice){
 }
 
 Player_Cooperator::Player_Cooperator(QWidget *parent) : Player(parent){
-    name="Cooperator";
+    name="cooperator";
     type=0;
+    load_image();
 }
 
 QSharedPointer<Player> Player_Cooperator::clone(){
-    return QSharedPointer<Player>(new Player_Cooperator(parentWidget()));
+    auto tmp = QSharedPointer<Player>(new Player_Cooperator(parentWidget()));
+    tmp->set_angle(angle);
+    return tmp;
 }
 
 int Player_Cooperator::choice(const QList< Match_Result > & history){
@@ -53,12 +127,15 @@ int Player_Cooperator::choice(const QList< Match_Result > & history){
 }
 
 Player_Cheater::Player_Cheater(QWidget *parent) : Player(parent){
-    name="Cheater";
+    name="cheater";
     type=1;
+    load_image();
 }
 
 QSharedPointer<Player> Player_Cheater::clone(){
-    return QSharedPointer<Player>(new Player_Cheater(parentWidget()));
+    auto tmp = QSharedPointer<Player>(new Player_Cheater(parentWidget()));
+    tmp->set_angle(angle);
+    return tmp;
 }
 
 int Player_Cheater::choice(const QList< Match_Result > & history){
@@ -66,12 +143,15 @@ int Player_Cheater::choice(const QList< Match_Result > & history){
 }
 
 Player_Copy_Cat::Player_Copy_Cat(QWidget *parent) : Player(parent){
-    name="Copy Cat";
+    name="copy cat";
     type=2;
+    load_image("copycat");
 }
 
 QSharedPointer<Player> Player_Copy_Cat::clone(){
-    return QSharedPointer<Player>(new Player_Copy_Cat(parentWidget()));
+    auto tmp = QSharedPointer<Player>(new Player_Copy_Cat(parentWidget()));
+    tmp->set_angle(angle);
+    return tmp;
 }
 
 int Player_Copy_Cat::choice(const QList< Match_Result > & history){
@@ -80,12 +160,14 @@ int Player_Copy_Cat::choice(const QList< Match_Result > & history){
 }
 
 Player_Random::Player_Random(QWidget *parent) : Player(parent){
-    name="Random";
+    name="random";
     type=3;
 }
 
 QSharedPointer<Player> Player_Random::clone(){
-    return QSharedPointer<Player>(new Player_Random(parentWidget()));
+    auto tmp = QSharedPointer<Player>(new Player_Random(parentWidget()));
+    tmp->set_angle(angle);
+    return tmp;
 }
 
 int Player_Random::choice(const QList< Match_Result > & history){

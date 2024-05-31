@@ -5,6 +5,7 @@
 #include<QPropertyAnimation>
 #include<QAbstractAnimation>
 #include<QParallelAnimationGroup>
+#include<QSequentialAnimationGroup>
 #include<QLabel>
 
 namespace Ui {
@@ -34,8 +35,8 @@ public:
     void fourth_opponent();
     void fifth_opponent();
     void right_opponent(QLabel* opponent);
-    void reaction(QLabel* opponent,MatchResult& result);
-    void opponent_reaction(QLabel* opponent,MatchResult& result);
+   // void reaction(QLabel* opponent,MatchResult& result);
+   // void opponent_reaction(QLabel* opponent,MatchResult& result);
 
 private slots:
     void on_cheatButton_clicked();

@@ -40,5 +40,9 @@
         <file>image/copycat_happy.png</file>
         <file>image/copycat_hate.png</file>
         <file>image/copycat_sad.png</file>
+        <file>image/copycat_leftexcited.png</file>
+        <file>image/copycat_lefthappy.png</file>
+        <file>image/copycat_leftsad.png</file>
+        <file>image/copycat_puzzle.png</file>
     </qresource>
 </RCC>

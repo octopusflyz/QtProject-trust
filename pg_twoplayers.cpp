@@ -68,30 +68,30 @@ void pg_twoplayers::right_opponent(QLabel* opponent){
     Group->addAnimation(backwardGroup);
     Group->start();
 
-    connect(coin_animation,&QPropertyAnimation::finished,this,[=](){
-      reaction(opponent,result);
-    });
-
-    // //连接变化
     // connect(coin_animation,&QPropertyAnimation::finished,this,[=](){
-    //     ui->machine->hide();
-    //     // if(players[0]->choice(history)==1&&players[1]->choice(history)==0){
-    //     ui->machine_00->show();
-    //     ui->left->hide();
-    //     ui->left_sad->setGeometry(QRect(140,260,120,160));
-    //     ui->left_sad->show();
-
-    //     // }
-    //     // else if(players[0]->choice(history)==1&&players[1]->choice(history)==0){
-    //     //     ui->machine_10->show();
-    //     // }
-    //     // else if(players[0]->choice(history)==0&&players[1]->choice(history)==1){
-    //     //     ui->machine_10->show();
-    //     // }
-    //     // else if(players[0]->choice(history)==1&&players[1]->choice(history)==1){
-    //     //      ui->machine_10->show();
-    //     // }
+    //   reaction(opponent,result);
     // });
+
+    //连接变化
+    connect(coin_animation,&QPropertyAnimation::finished,this,[=](){
+        ui->machine->hide();
+        // if(players[0]->choice(history)==1&&players[1]->choice(history)==0){
+        ui->machine_00->show();
+        ui->left->hide();
+        ui->left_sad->setGeometry(QRect(140,260,120,160));
+        ui->left_sad->show();
+
+        // }
+        // else if(players[0]->choice(history)==1&&players[1]->choice(history)==0){
+        //     ui->machine_10->show();
+        // }
+        // else if(players[0]->choice(history)==0&&players[1]->choice(history)==1){
+        //     ui->machine_10->show();
+        // }
+        // else if(players[0]->choice(history)==1&&players[1]->choice(history)==1){
+        //      ui->machine_10->show();
+        // }
+    });
     connect(coin_animationb,&QPropertyAnimation::finished,this,[=](){
         ui->machine->show();
         ui->machine_00->hide();
@@ -104,40 +104,40 @@ void pg_twoplayers::right_opponent(QLabel* opponent){
     });
 }
 
-//根据result变化
-void pg_twoplayers::reaction(QLabel* opponent,MatchResult& result){
-        ui->machine->hide();
-        if(result.action[0]==0&&result.action[1]==0){
-        ui->machine_00->show();
-        ui->left->hide();
-        ui->left_sad->setGeometry(QRect(140,260,120,160));
-        ui->left_sad->show();
-        }
-        else if(result.action[0]==1&&result.action[1]==0){
-            ui->machine_10->show();
-            ui->left->hide();
-        ui->left_excited->setGeometry(QRect(140,260,120,160));
-        ui->left_excited->show();
-        }
-        else if(result.action[0]==0&&result.action[1]==1){
-            ui->machine_01->show();
-            ui->left->hide();
-        ui->left_hate->setGeometry(QRect(140,260,120,160));
-        ui->left_hate->show();
-        }
-        else if(result.action[0]==1&&result.action[1]==1){
-             ui->machine_11->show();
-             ui->left->hide();
-             ui->left_happy->setGeometry(QRect(140,260,120,160));
-             ui->left_happy->show();
-        }
-        opponent_reaction(opponent,result);
+// //根据result变化
+// void pg_twoplayers::reaction(QLabel* opponent,MatchResult& result){
+//         ui->machine->hide();
+//         if(result.action[0]==0&&result.action[1]==0){
+//         ui->machine_00->show();
+//         ui->left->hide();
+//         ui->left_sad->setGeometry(QRect(140,260,120,160));
+//         ui->left_sad->show();
+//         }
+//         else if(result.action[0]==1&&result.action[1]==0){
+//             ui->machine_10->show();
+//             ui->left->hide();
+//         ui->left_excited->setGeometry(QRect(140,260,120,160));
+//         ui->left_excited->show();
+//         }
+//         else if(result.action[0]==0&&result.action[1]==1){
+//             ui->machine_01->show();
+//             ui->left->hide();
+//         ui->left_hate->setGeometry(QRect(140,260,120,160));
+//         ui->left_hate->show();
+//         }
+//         else if(result.action[0]==1&&result.action[1]==1){
+//              ui->machine_11->show();
+//              ui->left->hide();
+//              ui->left_happy->setGeometry(QRect(140,260,120,160));
+//              ui->left_happy->show();
+//         }
+//         opponent_reaction(opponent,result);
 
-}
+// }
 
-void pg_twoplayers::opponent_reaction(QLabel* player,MatchResult& result){
+// void pg_twoplayers::opponent_reaction(QLabel* player,MatchResult& result){
 
-}
+//}
 
 //金币左人移动same
 void pg_twoplayers::same_part(){
@@ -170,7 +170,7 @@ void pg_twoplayers::same_part(){
     coin_animation1->setDuration(1000);
     /*****后退*********/
     //左人
-    user_b =new QPropertyAnimation(ui->left,"geometry");
+    user_b =new QPropertyAnimation(ui->left_sad,"geometry");
     user_b->setStartValue(QRect(140,260,120,160));
     user_b->setKeyValueAt(0.5,QRect(140,260,120,160));
     user_b->setKeyValueAt(0.625,QRect(117.5,250,120,160));
@@ -202,7 +202,7 @@ void pg_twoplayers::same_part(){
 }
 
 void pg_twoplayers::first_opponent(){
-    ui->right_cheater->hide();
+    ui->right_copycat->show();
     same_part();
     right_opponent(ui->right_copycat);
     //qDebug()<<"in";

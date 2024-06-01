@@ -4,11 +4,11 @@
 #include <QPropertyAnimation>
 #include <QPainter>
 
-int Player::graphics_radius = 150;
-int Player::graphics_x = 175;
+int Player::graphics_radius = 180;
+int Player::graphics_x = 180;
 int Player::graphics_y = 200;
-int Player::score_radius = 50;
-int Player::score_x = 0;
+int Player::score_radius = 40;
+int Player::score_x = 10;
 int Player::score_y = 22;
 
 Player::Player(QWidget *parent)
@@ -20,8 +20,8 @@ Player::Player(QWidget *parent)
     graphics_label = new QLabel(this);
     score_label = new QLabel(parentWidget());
     image = new QImage();
-    graphics_label->setStyleSheet("border: 1px solid blue;");
-    score_label->setStyleSheet("border: 1px solid green;");
+    // graphics_label->setStyleSheet("border: 1px solid blue;");
+    // score_label->setStyleSheet("border: 1px solid green;");
     score_label->raise();
     connect(this,&Player::angle_changed,this,&Player::update_position);
 }
@@ -58,7 +58,7 @@ void Player::update_position(double ang){
     graphics_label->setPixmap(tmp);
     graphics_label->setMinimumSize(image->size());
     move(cos(angle)*graphics_radius+graphics_x,sin(angle)*graphics_radius+graphics_y);
-    score_label->move(cos(angle)*(graphics_radius-score_radius)+graphics_x,sin(angle)*(graphics_radius-score_radius)+graphics_y);
+    score_label->move(cos(angle)*(graphics_radius-score_radius)+graphics_x+score_x,sin(angle)*(graphics_radius-score_radius)+graphics_y+score_y);
     show();
     update();
     parentWidget()->update();
@@ -67,7 +67,7 @@ void Player::update_position(double ang){
 void Player::load_image(QString file_name/* = "" */){
     if(file_name=="") file_name=name;
     image->load(":/image/"+file_name+".png");
-    *image = image->scaledToHeight(40,Qt::SmoothTransformation);
+    *image = image->scaledToHeight(60,Qt::SmoothTransformation);
 }
 
 QPointF Player::graphics_center(){
@@ -86,13 +86,13 @@ void Player::clear_connection(){
 }
 
 void Player::paintEvent(QPaintEvent* e){
-    QPainter painter(this);
-    painter.setPen(QPen(Qt::black,1));
-    painter.drawEllipse(graphics_center()-geometry().topLeft(),5,5);
-    qDebug()<<"Player"<<curr_id<<graphics_center();
-    // qDebug()<<curr_id<<graphics_label->geometry()<<score_label->geometry();
-    painter.setPen(QPen(Qt::green,1)) ;
-    painter.drawRect(rect());
+    // QPainter painter(this);
+    // painter.setPen(QPen(Qt::black,1));
+    // painter.drawEllipse(graphics_center()-geometry().topLeft(),5,5);
+    // qDebug()<<"Player"<<curr_id<<graphics_center();
+    // // qDebug()<<curr_id<<graphics_label->geometry()<<score_label->geometry();
+    // painter.setPen(QPen(Qt::green,1)) ;
+    // painter.drawRect(rect());
 }
 
 void Player::eliminate(){
@@ -134,6 +134,7 @@ QDebug operator << (QDebug debug, Player_Pair p){
 
 int Player::random_mistake(int choice){
     int randomNumber=QRandomGenerator::global()->bounded(1,101);
+
     return (randomNumber>probility ? choice : 1-choice);
 }
 
@@ -143,9 +144,9 @@ Connection_Line::Connection_Line(Player* fr,Player* t,QWidget* parent):QWidget(p
 
 void Connection_Line::display(int highlight_idx){
     QPainter painter(parentWidget());
-    painter.setPen(QPen(Qt::gray,1));
+    painter.setPen(QPen(Qt::GlobalColor::lightGray,1));
     if(highlight_idx==from->curr_id||highlight_idx==to->curr_id){
-        painter.setPen(QPen(Qt::GlobalColor::darkYellow,1));
+        painter.setPen(QPen(QColor("#FF4500"),2));
     }
     painter.drawLine(from->graphics_center(),to->graphics_center());
 }
@@ -175,6 +176,7 @@ void Trash_Can::empty(){
     //     delete bin[i];
     // }
     bin.clear();
+
 }
 
 Player_Cooperator::Player_Cooperator(QWidget *parent) : Player(parent){

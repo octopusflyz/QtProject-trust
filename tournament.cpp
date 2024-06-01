@@ -219,11 +219,12 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
     //ui
     setMinimumHeight(500);
     setMinimumWidth(380);
-    move(10,10);
+    move(0,10);
+    setObjectName("tournament");
 
     reset();
     qDebug()<<geometry();
-    setStyleSheet("border:1px solid black;");
+    // setStyleSheet("*{background-color: white} QLabel{background-color:none}");
     // auto tmp = new QLabel("TOURNAMENT IS HERERERERERERR",this);
     show();
     Worker->LetThemIn();// debug use
@@ -419,6 +420,9 @@ void Tournament::set_highlight_index(int hi){
 }
 
 void Tournament::paintEvent(QPaintEvent* event){
+    QPainter painter(this);
+    painter.setBrush(QBrush(Qt::white));
+    painter.drawRect(rect());
     for(int i=0;i<connections.length();i++) connections[i]->display(highlight_index);
 }
 
@@ -470,6 +474,7 @@ inline double calculate_angle(double t){
 }
 
 void Tournament_Worker::LetThemIn(){
+    // QMutexLocker<QMutex> locker(flag_mutex.data());
     qDebug()<<"LETTHEMIN";
     if(player_pool.empty()){
         player_pool.clear();
@@ -529,14 +534,17 @@ void Tournament_Worker::Competition(){
     //     QThread::msleep(300);
     // }
     qDebug()<<"COMPETITION!";
+    auto locker = new QMutexLocker<QMutex>(flag_mutex.data());
     QPropertyAnimation* anim = new QPropertyAnimation(tournament,"highlight_index",tournament);
     anim->setStartValue(0);
     anim->setEndValue(Tournament::PlayerNum);
-    anim->setDuration(500);
-    connect(anim,&QAbstractAnimation::finished,[this](){
+    anim->setDuration(start_flag?400:500);
+    connect(anim,&QAbstractAnimation::finished,[this,locker](){
         for(int i=0;i<player_pool.length();i++){
             player_pool[i]->display_score();
         }
+        // locker->unlock();
+        // delete locker;
     });
     anim->start(QAbstractAnimation::DeleteWhenStopped);
     tournament->update();
@@ -551,10 +559,12 @@ void Tournament_Worker::Competition(){
         player_pool[it]->init(it);//注意到你judge里会改id加的
         qDebug()<<"id:"<<it<<" "<<player_pool[it]->score<<" "<<player_pool[it]->name;
     }
+    delete locker;
     return;
 }
 
 void Tournament_Worker::KickThemOut(){
+    QMutexLocker<QMutex> locker(flag_mutex.data());
     qDebug()<<"KICKTHEMOUT";
     for(int i=0;i<player_pool.length();i++){
         player_pool[i]->score_label->setText("");
@@ -599,7 +609,9 @@ int Tournament_Worker::Get_step(){
 }
 
 void Tournament_Worker::Work_OnStep(int step){
+    QMutexLocker<QMutex> locker(flag_mutex.data());
     if(step==0){
+        locker.unlock();
         LetThemIn();
         qDebug()<<"lets UPDATE!";
         emit Update_signal();//发出更新请求
@@ -608,11 +620,13 @@ void Tournament_Worker::Work_OnStep(int step){
         return;
     }
     if(step==1){
+        locker.unlock();
         Competition();
         Set_step(2);
         return;
     }
     if(step==2){
+        locker.unlock();
         KickThemOut();
         Set_step(0);
         return;
@@ -623,7 +637,7 @@ void Tournament_Worker::Tournament_Round(){
     while(true){
         qDebug()<<"start round";
         QEventLoop loop;
-        QTimer::singleShot(3000,&loop,&QEventLoop::quit);
+        QTimer::singleShot(750,&loop,&QEventLoop::quit);
         loop.exec();
         qDebug()<<"loop ended!";
         if(Get_flag()){

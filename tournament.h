@@ -98,6 +98,7 @@ public:
 
     //value-matrix部分
     QSharedPointer<Judge> judge;
+    static int box_pair[8];
     static int Init_ValMatrix[2][2][2];
     QVector<QVector<QVector<int>>> ValMatrix_cache;//mat(i,j,k)表示在双方的(i,j)选择下选择k的得分
     QVector<QVector<QVector<QSpinBox*>>> ValMatrix_spinbox;

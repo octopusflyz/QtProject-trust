@@ -9,6 +9,7 @@ const double TAU = acos(-1)*2;
 int Tournament::PlayerNum = 24;
 int Tournament::type_number = 8;
 QVector<int> Tournament::Init_PlayerTypeNum={3,3,3,3,3,3,3,3};
+int Tournament::box_pair[8]={1,0,5,4,3,2,7,6};
 int Tournament::Init_ValMatrix[2][2][2]={{{2,2},{-1,3}},{{3,-1},{0,0}}};
 int Tournament::Init_Elim_num=5;
 int Tournament::Init_Probility=5;
@@ -19,6 +20,7 @@ Tournament_Worker::Tournament_Worker(int _Playernum,Tournament* par):PlayerNum(_
     continue_flag=false;
     step_flag=0;
     flag_mutex=QSharedPointer<QMutex>::create();
+    connect(this,&Tournament_Worker::Start_signal,this,[=](){qDebug()<<"start signal emit";});
     connect(this,&Tournament_Worker::Start_signal,this,&Tournament_Worker::Tournament_Round);
 }
 
@@ -49,8 +51,8 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
     Player_slider_ui[7]=mui->ui->widget_8;
 
     qDebug()<<"CREAT!";
-    Order_change.resize(4);
-    Order_change={0,1,2,3};
+    Order_change.resize(8);
+    Order_change={0,1,2,3,4,5,6,7};
     NumGame_slider=mui->ui->horizontalSlider_1;
     ElimNum_slider=mui->ui->horizontalSlider_2;
     Prob_slider=mui->ui->horizontalSlider_3;
@@ -76,10 +78,11 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
     Worker=new Tournament_Worker(PlayerNum,this);//前面的变量初始化之后调用一次Update函数就好了
     mutex=QSharedPointer<QMutex>::create();
     //update_mutex=QSharedPointer<QMutex>::create();
-    //Worker_Thread=QSharedPointer<QThread>::create(this);
+    Worker_Thread=QSharedPointer<QThread>::create(this);
     Worker->mutex=mutex;
     //Worker->update_mutex=update_mutex;
-    //Worker->moveToThread(Worker_Thread.data());//移动到新线程中
+    Worker->moveToThread(Worker_Thread.data());//移动到新线程中
+    Worker_Thread->start();
 
     Order_change.resize(type_number);
     for(int i=0;i<type_number;++i) Order_change.append(i);
@@ -310,7 +313,13 @@ void Tournament::PlayerNum_Change(int index){
 void Tournament::ValueMatrix_Change(unsigned int index){
     QMutexLocker locker(mutex.data());
     int i=(index>>2)&1,j=(index>>1)&1,k=index&1;
+    int i_=(box_pair[index]>>2)&1,j_=(box_pair[index]>>1)&1,k_=(box_pair[index]&1);
     ValMatrix_cache[i][j][k]=ValMatrix_spinbox[i][j][k]->value();
+    ValMatrix_spinbox[i][j][k]->blockSignals(true);
+    ValMatrix_spinbox[i_][j_][k_]->blockSignals(true);
+    ValMatrix_spinbox[i_][j_][k_]->setValue(ValMatrix_cache[i][j][k]);
+    ValMatrix_spinbox[i][j][k]->blockSignals(false);
+    ValMatrix_spinbox[i_][j_][k_]->blockSignals(false);
     for(int i=0;i<2;++i)
         for(int j=0;j<2;++j)
             for(int k=0;k<2;++k)
@@ -539,6 +548,7 @@ void Tournament_Worker::Work_OnStep(int step){
 
 void Tournament_Worker::Tournament_Round(){
     while(true){
+        qDebug()<<"start round";
         QThread::msleep(300);
         if(Get_flag()){
             Work_OnStep(Get_step());

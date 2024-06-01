@@ -14,6 +14,7 @@ Judge::Judge(QWidget *parent)
     rewards[0][1]=Match_Result(0,1,-1,3);
     rewards[1][0]=Match_Result(1,0,3,-1);
     rewards[1][1]=Match_Result(1,1,0,0);
+    hide();
 }
 
 void Judge::init(){

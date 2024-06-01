@@ -2,9 +2,9 @@
 #include <QRandomGenerator>
 #include <QPropertyAnimation>
 
-int Player::graphics_radius = 200;
-int Player::graphics_x = 250;
-int Player::graphics_y = 265;
+int Player::graphics_radius = 150;
+int Player::graphics_x = 175;
+int Player::graphics_y = 200;
 int Player::score_radius = 50;
 int Player::score_x = 0;
 int Player::score_y = -22;
@@ -18,6 +18,8 @@ Player::Player(QWidget *parent)
     graphics_label = new QLabel(this);
     score_label = new QLabel(this);
     image = new QImage();
+    graphics_label->setStyleSheet("border: 1px solid blue;");
+    score_label->setStyleSheet("border: 1px solid green;");
     connect(this,&Player::angle_changed,this,&Player::update_position);
 }
 
@@ -27,12 +29,16 @@ void Player::init(int id, bool hard /* = false*/){
         score=0;
         score_label->setText("");
         score_label->hide();
-        graphics_label->setPixmap(QPixmap::fromImage(*image));
     }
 }
 
 void Player::set_angle(double ang){
     angle = ang;
+    emit angle_changed(ang);
+}
+
+double Player::get_angle(){
+    return angle;
 }
 
 void Player::goto_angle(double ang){
@@ -43,7 +49,11 @@ void Player::goto_angle(double ang){
     anim->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
-void Player::update_position(double){
+void Player::update_position(double ang){
+    QPixmap tmp = QPixmap::fromImage(*image);
+    if(cos(ang)>0) tmp = tmp.transformed(QTransform().scale(-1,1),Qt::SmoothTransformation);
+    graphics_label->setPixmap(tmp);
+    graphics_label->setMinimumSize(image->size());
     move(cos(angle)*graphics_radius+graphics_x,sin(angle)*graphics_radius+graphics_y);
     score_label->move(-cos(angle)*score_radius+score_x,-sin(angle)*score_radius+score_y);
 }
@@ -51,6 +61,7 @@ void Player::update_position(double){
 void Player::load_image(QString file_name/* = "" */){
     if(file_name=="") file_name=name;
     image->load(":/image/"+file_name+".png");
+    *image = image->scaledToHeight(40,Qt::SmoothTransformation);
 }
 
 void Player::add_connection(QLineF* line,int id){//id=1:from && id=2:to
@@ -112,7 +123,7 @@ int Player::random_mistake(int choice){
 
 Player_Cooperator::Player_Cooperator(QWidget *parent) : Player(parent){
     name="cooperator";
-    type=0;
+    type=2;
     load_image();
 }
 
@@ -144,7 +155,7 @@ int Player_Cheater::choice(const QList< Match_Result > & history){
 
 Player_Copy_Cat::Player_Copy_Cat(QWidget *parent) : Player(parent){
     name="copy cat";
-    type=2;
+    type=0;
     load_image("copycat");
 }
 
@@ -161,7 +172,8 @@ int Player_Copy_Cat::choice(const QList< Match_Result > & history){
 
 Player_Random::Player_Random(QWidget *parent) : Player(parent){
     name="random";
-    type=3;
+    type=7;
+    load_image();
 }
 
 QSharedPointer<Player> Player_Random::clone(){
@@ -173,6 +185,88 @@ QSharedPointer<Player> Player_Random::clone(){
 int Player_Random::choice(const QList< Match_Result > & history){
     return QRandomGenerator::global()->generate() % 2;
 }
+
+Player_Grudger::Player_Grudger(QWidget *parent) : Player(parent){
+    name="grudger";
+    type=3;
+    load_image();
+}
+
+QSharedPointer<Player> Player_Grudger::clone(){
+    auto tmp = QSharedPointer<Player>(new Player_Grudger(parentWidget()));
+    tmp->set_angle(angle);
+    return tmp;
+}
+
+int Player_Grudger::choice(const QList<Match_Result> & history){
+    int flag=0;//0表示没有被cheat过，1表示被cheat过
+    if(history.empty()) return random_mistake(0);
+    for(auto it:history) if(it.action[1-curr_id]){flag=1;break;}
+    return random_mistake(flag);
+}
+
+Player_Detective::Player_Detective(QWidget *parent) : Player(parent){
+    name="detective";
+    type=4;
+    load_image();
+}
+
+QSharedPointer<Player> Player_Detective::clone(){
+    auto tmp = QSharedPointer<Player>(new Player_Detective(parentWidget()));
+    tmp->set_angle(angle);
+    return tmp;
+}
+
+int Player_Detective::choice(const QList< Match_Result > & history){
+    if(history.size()<=3)
+        return random_mistake(history.size()%2);
+    else{
+        int flag=0;//0 for acts like copy cat , 1 for acts like cheat
+        if(history[0].action[1-curr_id]+history[1].action[1-curr_id]+history[2].action[1-curr_id]+history[3].action[1-curr_id]) flag=0;
+        else flag=1;
+        if(flag==0) return random_mistake(history.back().action[1-curr_id]);
+        else return random_mistake(1);
+    }
+}
+
+Player_Copy_Kitten::Player_Copy_Kitten(QWidget *parent) : Player(parent){
+    name="copy kitten";
+    type=5;
+    load_image("copykitten");
+}
+
+
+QSharedPointer<Player> Player_Copy_Kitten::clone(){
+    auto tmp = QSharedPointer<Player>(new Player_Copy_Kitten(parentWidget()));
+    tmp->set_angle(angle);
+    return tmp;
+}
+
+int Player_Copy_Kitten::choice(const QList< Match_Result > & history){
+    if(history.size()<2) return random_mistake(0);
+    int len=history.size();
+    if(history[len-1].action[1-curr_id] && history[len-2].action[1-curr_id]) return random_mistake(1);
+    return random_mistake(0);
+}
+
+Player_Simpleton::Player_Simpleton(QWidget *parent) : Player(parent){
+    name="simpleton";
+    type=6;
+    load_image();
+}
+
+QSharedPointer<Player> Player_Simpleton::clone(){
+    auto tmp = QSharedPointer<Player>(new Player_Simpleton(parentWidget()));
+    tmp->set_angle(angle);
+    return tmp;
+}
+
+int Player_Simpleton::choice(const QList< Match_Result > & history){
+    if(history.empty()) return random_mistake(0);
+    if(history.back().action[1-curr_id]) return random_mistake(1-history.back().action[curr_id]);
+    else return random_mistake(history.back().action[curr_id]);
+}
+
 
 bool PlayerType_Compare(const Player& p1,const Player &p2){
     return p1.type<p2.type;

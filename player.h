@@ -12,7 +12,7 @@
 class Player : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(double angle READ angle WRITE set_angle NOTIFY angle_changed)
+    Q_PROPERTY(double angle READ get_angle WRITE set_angle NOTIFY angle_changed)
 public:
     explicit Player(QWidget *parent = nullptr);
     int curr_id;
@@ -29,6 +29,7 @@ public:
     QLabel* score_label;
     QImage* image;
     void set_angle(double ang);
+    double get_angle();
     void goto_angle(double ang);
     void load_image(QString file_name="");
 
@@ -96,10 +97,30 @@ public:
     virtual QSharedPointer<Player> clone();
     virtual int choice(const QList< Match_Result > & history);
 };
-bool PlayerType_Compare(const Player& p1,const Player &p2);
-bool PlayerScore_Compare(const Player& p1,const Player &p2);
-bool PlayerPtrType_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);
-bool PlayerPtrScore_Compare(const QSharedPointer<Player>& p1,const QSharedPointer<Player>& p2);
+class Player_Grudger : public Player{
+public:
+    Player_Grudger(QWidget *parent = nullptr);
+    virtual QSharedPointer<Player> clone();
+    virtual int choice(const QList< Match_Result > & history);
+};
+class Player_Detective : public Player{
+public:
+    Player_Detective(QWidget *parent = nullptr);
+    virtual QSharedPointer<Player> clone();
+    virtual int choice(const QList< Match_Result > & history);
+};
+class Player_Copy_Kitten : public Player{
+public:
+    Player_Copy_Kitten(QWidget *parent = nullptr);
+    virtual QSharedPointer<Player> clone();
+    virtual int choice(const QList< Match_Result > & history);
+};
+class Player_Simpleton : public Player{
+public:
+    Player_Simpleton(QWidget *parent = nullptr);
+    virtual QSharedPointer<Player> clone();
+    virtual int choice(const QList< Match_Result > & history);
+};
 
 bool PlayerType_Compare(const Player& p1,const Player &p2);
 bool PlayerScore_Compare(const Player& p1,const Player &p2);

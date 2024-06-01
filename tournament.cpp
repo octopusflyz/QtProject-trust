@@ -439,7 +439,7 @@ void Tournament_Worker::reset(){
     start_flag=false;
     continue_flag=false;
     step_flag=false;
-    for(auto it:player_pool) it->eliminate();
+    for(int it=0 ;it<player_pool.size();++it) player_pool[it]->eliminate();
     tournament->trash_can.empty();
     player_pool.clear();
     QMutexLocker locker_(mutex.data());

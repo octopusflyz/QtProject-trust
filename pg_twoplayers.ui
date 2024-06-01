@@ -291,10 +291,10 @@
   <widget class="QLabel" name="score_user">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>90</y>
-     <width>61</width>
-     <height>71</height>
+     <x>230</x>
+     <y>130</y>
+     <width>41</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -307,10 +307,10 @@
   <widget class="QLabel" name="score_opponent">
    <property name="geometry">
     <rect>
-     <x>420</x>
-     <y>90</y>
-     <width>61</width>
-     <height>71</height>
+     <x>430</x>
+     <y>130</y>
+     <width>51</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -496,9 +496,64 @@
     <string/>
    </property>
   </widget>
+  <widget class="QTextEdit" name="text1">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>701</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(240, 240, 240);
+font: 9pt &quot;Segoe Print&quot;;</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::NoFrame</enum>
+   </property>
+   <property name="html">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe Print'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:700;&quot;&gt;Now, let's play for real. &lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;You'll be playing against 5 different opponents,each with their own &amp;quot;strategy&amp;quot;. With each opponent, you'll play  rounds.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Can you trust them? Or rather...can they trust you?&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="text2">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>53</y>
+     <width>104</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(240, 240, 240);
+font: 9pt &quot;Segoe Print&quot;;</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::NoFrame</enum>
+   </property>
+   <property name="html">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe Print'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;opponent:&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;your total score:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
   <zorder>machine_11</zorder>
   <zorder>machine_10</zorder>
-  <zorder>machine_00</zorder>
   <zorder>coin_left</zorder>
   <zorder>coin_right</zorder>
   <zorder>machine</zorder>
@@ -526,6 +581,9 @@
   <zorder>copycat_h</zorder>
   <zorder>grudger_h</zorder>
   <zorder>detective_h</zorder>
+  <zorder>machine_00</zorder>
+  <zorder>text1</zorder>
+  <zorder>text2</zorder>
  </widget>
  <resources/>
  <connections/>

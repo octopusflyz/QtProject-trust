@@ -7,6 +7,7 @@
 #include<QParallelAnimationGroup>
 #include<QSequentialAnimationGroup>
 #include<QLabel>
+#include<QElapsedTimer>
 
 namespace Ui {
 class pg_twoplayers;
@@ -28,11 +29,12 @@ public:
     void third_opponent();
     void fourth_opponent();
     void fifth_opponent();
-    void right_opponent(QLabel* opponent);
+    void right_opponent(QLabel* opponent1);
     void left_opponent();
     void show_hat(QLabel* opponent);
-   // void reaction(QLabel* opponent,MatchResult& result);
-   // void opponent_reaction(QLabel* opponent,MatchResult& result);
+   void reaction(QLabel* opponent);//,MatchResult& result
+    void hiding_all();
+    QElapsedTimer t;
 
 private slots:
     void on_cheatButton_clicked();
@@ -41,6 +43,7 @@ private slots:
 
 private:
     int round=0;
+    bool flag=0;//记录animationchanges
     Ui::pg_twoplayers *ui;
     QSequentialAnimationGroup *Group;
    //  QSequentialAnimationGroup *Group_2;
@@ -60,6 +63,8 @@ private:
     QPropertyAnimation* coin_animation1;
     QPropertyAnimation* coin_animationb;
     QPropertyAnimation* coin_animation1b;
+    QPropertyAnimation* coin_animationup;
+    QPropertyAnimation* coin_animation1up;
 
     QPropertyAnimation* machine;
 };

@@ -14,11 +14,12 @@ class pg_allplayers : public QWidget
 public:
     explicit pg_allplayers(QWidget *parent = nullptr);
     ~pg_allplayers();
-    int flag=0;
+
+    int flag;
 
 //private:
     Ui::pg_allplayers *ui;
-private slots:
+public slots:
     void on_pushButton_2_clicked();
 };
 

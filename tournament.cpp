@@ -33,6 +33,7 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
     //下面是所有变量都已经定义好了之后各个信号和槽之间的链接关系的一个实现
     //注意：我没有写QSpinBox的绑定(就都合作都cheat的val应该是相等的)，所以需要在外面绑定好
     /*下面是原来文件的构造部分*/
+
     Player_slider.resize(8);
     Player_slider[0]=mui->ui->widget->get_qslider();
     Player_slider[1]=mui->ui->widget_2->get_qslider();
@@ -56,8 +57,12 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
     Order_change.resize(8);
     Order_change={0,1,2,3,4,5,6,7};
     NumGame_slider=mui->ui->horizontalSlider_1;
+    NumGame_spinbox=mui->ui->spinBox_9;
     ElimNum_slider=mui->ui->horizontalSlider_2;
+    ElimNum_spinbox_1=mui->ui->spinBox_12;
+    ElimNum_spinbox_2=mui->ui->spinBox_13;
     Prob_slider=mui->ui->horizontalSlider_3;
+    Prob_spinbox=mui->ui->spinBox_11;
     ValMatrix_spinbox={{{mui->ui->spinBox,\
                            mui->ui->spinBox_2},\
                           {mui->ui->spinBox_5,\
@@ -215,11 +220,12 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
     //ui
     setMinimumHeight(500);
     setMinimumWidth(380);
-    move(10,10);
+    move(0,10);
+    setObjectName("tournament");
 
     reset();
     qDebug()<<geometry();
-    setStyleSheet("border:1px solid black;");
+    // setStyleSheet("*{background-color: white} QLabel{background-color:none}");
     // auto tmp = new QLabel("TOURNAMENT IS HERERERERERERR",this);
     show();
     Worker->LetThemIn();// debug use
@@ -236,6 +242,27 @@ void Tournament::reset(){
     num_games_cache=Init_num_games;
     Elim_num_cache=Init_Elim_num;
     Probility_cache=Init_Probility;
+    NumGame_slider->blockSignals(true);
+    NumGame_spinbox->blockSignals(true);
+    ElimNum_slider->blockSignals(true);
+    ElimNum_spinbox_1->blockSignals(true);
+    ElimNum_spinbox_2->blockSignals(true);
+    Prob_slider->blockSignals(true);
+    Prob_spinbox->blockSignals(true);
+    NumGame_slider->setValue(Init_num_games);
+    NumGame_spinbox->setValue(Init_num_games);
+    ElimNum_slider->setValue(Init_Elim_num);
+    ElimNum_spinbox_1->setValue(Init_Elim_num);
+    ElimNum_spinbox_2->setValue(Init_Elim_num);
+    Prob_slider->setValue(Init_Probility);
+    Prob_spinbox->setValue(Init_Probility);
+    NumGame_slider->blockSignals(false);
+    NumGame_spinbox->blockSignals(true);
+    ElimNum_slider->blockSignals(false);
+    ElimNum_spinbox_1->blockSignals(true);
+    ElimNum_spinbox_2->blockSignals(false);
+    Prob_slider->blockSignals(false);
+    Prob_spinbox->blockSignals(false);
     ValMatrix_cache.clear();
     ValMatrix_cache.resize(2);
     for(int i=0;i<2;i++) ValMatrix_cache[i].resize(2);
@@ -244,11 +271,21 @@ void Tournament::reset(){
             ValMatrix_cache[i][j].resize(2);
     for(int i=0;i<2;++i)
         for(int j=0;j<2;++j)
-            for(int k=0;k<2;++k)
+            for(int k=0;k<2;++k){
                 ValMatrix_cache[i][j][k]=Init_ValMatrix[i][j][k];
+                ValMatrix_spinbox[i][j][k]->blockSignals(true);
+                ValMatrix_spinbox[i][j][k]->setValue(Init_ValMatrix[i][j][k]);
+                ValMatrix_spinbox[i][j][k]->blockSignals(false);
+            }
     PlayerTypeNum_cache.clear();
     PlayerTypeNum_cache.resize(type_number);
-    for(int i=0;i<type_number;++i) PlayerTypeNum_cache[i]=Init_PlayerTypeNum[i];
+    for(int i=0;i<type_number;++i) {
+        PlayerTypeNum_cache[i]=Init_PlayerTypeNum[i];
+        Player_slider[i]->blockSignals(true);
+        Player_slider[i]->setValue(Init_PlayerTypeNum[i]);
+        Player_slider[i]->blockSignals(false);
+        Player_slider_ui[i]->update_value();
+    }
     locker.unlock();//这里要释放掉，不然会死锁
     Worker->reset();
     return;
@@ -310,6 +347,19 @@ void Tournament::PlayerNum_Change(int index){
         Player_slider[it]->blockSignals(false);
         Player_slider_ui[it]->update_value();
     }
+    for(int it=0;it<PlayerNum;++it){
+        Worker->player_pool[it]->hide();
+        Worker->player_pool[it]->eliminate();
+    }
+    Worker->PlayerTypeNum=PlayerTypeNum_cache;
+    trash_can.empty();
+    Worker->player_pool.clear();
+    Worker->LetThemIn();
+    locker.unlock();
+    Worker->Set_flag(0,false,false);
+    Start_button->setText("Start");
+    dynamic_cast<pg_allplayers*>(parentWidget())->flag=0;
+    //emit Connect_signal();
     return /*QVector<int>(PlayerTypeNum_cache)*/;
 }
 void Tournament::ValueMatrix_Change(unsigned int index){
@@ -320,6 +370,7 @@ void Tournament::ValueMatrix_Change(unsigned int index){
     ValMatrix_spinbox[i][j][k]->blockSignals(true);
     ValMatrix_spinbox[i_][j_][k_]->blockSignals(true);
     ValMatrix_spinbox[i_][j_][k_]->setValue(ValMatrix_cache[i][j][k]);
+    ValMatrix_cache[i_][j_][k_]=ValMatrix_spinbox[i_][j_][k_]->value();
     ValMatrix_spinbox[i][j][k]->blockSignals(false);
     ValMatrix_spinbox[i_][j_][k_]->blockSignals(false);
     for(int i=0;i<2;++i)
@@ -345,6 +396,7 @@ void Tournament::Rule_Change(int index){
 }
 
 void Tournament::Update(){
+    qDebug()<<"UPDATE!";
     QMutexLocker locker(mutex.data());
     //QMutexLocker locker_update(update_mutex.data());
     Worker->PlayerNum=PlayerNum;
@@ -353,6 +405,8 @@ void Tournament::Update(){
     for(int i=0;i<2;++i)
         for(int j=0;j<2;++j)
             Worker->judge->reward_reset(i,j,ValMatrix_cache[i][j][0],ValMatrix_cache[i][j][1]);
+    for(int i=0;i<2;++i)
+        for(int j=0;j<2;++j) qDebug()<<"Val_matrix:("<<i<<","<<j<<")"<<ValMatrix_cache[i][j][0]<<" "<<ValMatrix_cache[i][j][1];
     Worker->num_games=num_games_cache;
     Worker->Elim_num=Elim_num_cache;
     Worker->Probability=Probility_cache;
@@ -369,6 +423,9 @@ void Tournament::set_highlight_index(int hi){
 }
 
 void Tournament::paintEvent(QPaintEvent* event){
+    QPainter painter(this);
+    painter.setBrush(QBrush(Qt::white));
+    painter.drawRect(rect());
     for(int i=0;i<connections.length();i++) connections[i]->display(highlight_index);
 }
 
@@ -400,7 +457,13 @@ void Tournament_Worker::reset(){
     start_flag=false;
     continue_flag=false;
     step_flag=false;
+    for(int it=0 ;it<player_pool.size();++it) player_pool[it]->eliminate();
+    tournament->trash_can.empty();
     player_pool.clear();
+    QMutexLocker locker_(mutex.data());
+    PlayerTypeNum=tournament->PlayerTypeNum_cache;
+    locker_.unlock();
+    LetThemIn();
     //tournament->clear_connections();
     Winner_list.clear();
     Elim_list.clear();
@@ -414,6 +477,7 @@ inline double calculate_angle(double t){
 }
 
 void Tournament_Worker::LetThemIn(){
+    // QMutexLocker<QMutex> locker(flag_mutex.data());
     qDebug()<<"LETTHEMIN";
     if(player_pool.empty()){
         player_pool.clear();
@@ -462,6 +526,7 @@ void Tournament_Worker::LetThemIn(){
     std::stable_sort(player_pool.begin(),player_pool.end(),PlayerPtrType_Compare);
     for(int i=0;i<player_pool.length();++i) player_pool[i]->init(i,true);//希望我没理解错这个函数的意思(
     for(int i=0;i<player_pool.length();i++) player_pool[i]->goto_angle(calculate_angle(((double)i)/player_pool.length()));
+    for(int i=0;i<player_pool.length();i++) player_pool[i]->probility=Probability;//更新probaility"请忽略错词qwq"
     return ;
 }
 
@@ -472,15 +537,23 @@ void Tournament_Worker::Competition(){
     //     QThread::msleep(300);
     // }
     qDebug()<<"COMPETITION!";
+    auto locker = new QMutexLocker<QMutex>(flag_mutex.data());
     QPropertyAnimation* anim = new QPropertyAnimation(tournament,"highlight_index",tournament);
     anim->setStartValue(0);
     anim->setEndValue(Tournament::PlayerNum);
-    anim->setDuration(500);
+    anim->setDuration(start_flag?400:500);
+    connect(anim,&QAbstractAnimation::finished,[this,locker](){
+        for(int i=0;i<player_pool.length();i++){
+            player_pool[i]->display_score();
+        }
+        // locker->unlock();
+        // delete locker;
+    });
     anim->start(QAbstractAnimation::DeleteWhenStopped);
     tournament->update();
     for(int i=0;i<player_pool.length()-1;++i)
         for(int j=i+1;j<player_pool.length();++j)
-            one_vs_one(i,j);
+            one_vs_one(i,j); 
     QList<QSharedPointer<Player>> lst=player_pool;
     std::sort(lst.begin(),lst.end(),PlayerPtrScore_Compare);
     Winner_list.clear();
@@ -489,11 +562,17 @@ void Tournament_Worker::Competition(){
         player_pool[it]->init(it);//注意到你judge里会改id加的
         qDebug()<<"id:"<<it<<" "<<player_pool[it]->score<<" "<<player_pool[it]->name;
     }
+    delete locker;
     return;
 }
 
 void Tournament_Worker::KickThemOut(){
+    QMutexLocker<QMutex> locker(flag_mutex.data());
     qDebug()<<"KICKTHEMOUT";
+    for(int i=0;i<player_pool.length();i++){
+        player_pool[i]->score_label->setText("");
+        player_pool[i]->score_label->hide();
+    }
     Elim_list.clear();
     QList<QSharedPointer<Player>> lst=player_pool;
     std::sort(lst.begin(),lst.end(),PlayerPtrScore_Compare);
@@ -533,19 +612,24 @@ int Tournament_Worker::Get_step(){
 }
 
 void Tournament_Worker::Work_OnStep(int step){
+    QMutexLocker<QMutex> locker(flag_mutex.data());
     if(step==0){
+        locker.unlock();
         LetThemIn();
+        qDebug()<<"lets UPDATE!";
         emit Update_signal();//发出更新请求
-        QThread::msleep(300);//等更新
+        //QThread::msleep(300);//等更新
         Set_step(1);
         return;
     }
     if(step==1){
+        locker.unlock();
         Competition();
         Set_step(2);
         return;
     }
     if(step==2){
+        locker.unlock();
         KickThemOut();
         Set_step(0);
         return;
@@ -555,9 +639,8 @@ void Tournament_Worker::Work_OnStep(int step){
 void Tournament_Worker::Tournament_Round(){
     while(true){
         qDebug()<<"start round";
-        //QThread::msleep(300);
         QEventLoop loop;
-        QTimer::singleShot(3000,&loop,&QEventLoop::quit);
+        QTimer::singleShot(750,&loop,&QEventLoop::quit);
         loop.exec();
         qDebug()<<"loop ended!";
         if(Get_flag()){
@@ -592,7 +675,7 @@ void Tournament_Worker::Button_OnPush(int index){
     }
     if(index==2){
         Set_flag(0,false,false);
-        emit Update_signal();
+        //emit Update_signal();
         return;
     }
 }

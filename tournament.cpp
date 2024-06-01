@@ -3,6 +3,7 @@
 #include "ui_pg_allplayers.h"
 #include "slider.h"
 #include <QPainter>
+#include <QPropertyAnimation>
 const double TAU = acos(-1)*2;
 
 int Tournament::PlayerNum = 24;
@@ -22,7 +23,7 @@ Tournament_Worker::Tournament_Worker(int _Playernum,Tournament* par):PlayerNum(_
 }
 
 Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
-    : QWidget{parent}
+    : QWidget{parent},trash_can(this)
 {
     //我不知道怎么留构造函数的接口比较方便
     //下面是所有变量都已经定义好了之后各个信号和槽之间的链接关系的一个实现
@@ -138,18 +139,6 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
 
     connect(Reset_button,&QPushButton::clicked,this,&Tournament::reset);
 
-    //ui
-    setMinimumHeight(500);
-    setMinimumWidth(380);
-    move(10,10);
-
-    reset();
-    qDebug()<<rect();
-    setStyleSheet("border:1px solid black;");
-    // auto tmp = new QLabel("TOURNAMENT IS HERERERERERERR",this);
-    show();
-    Worker->LetThemIn();// debug use
-    show();
     // judge->hide();
     // //我不知道怎么留构造函数的接口比较方便
     // //下面是所有变量都已经定义好了之后各个信号和槽之间的链接关系的一个实现
@@ -214,6 +203,22 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
     // connect(Control_signal.data(),&QSignalMapper::mappedInt,Worker,&Tournament_Worker::Button_OnPush);
 
     // connect(Reset_button,&QPushButton::clicked,this,&Tournament::reset);
+
+    highlight_index=PlayerNum;
+    connect(this,&Tournament::highlight_index_changed,[this](){update();});
+
+    //ui
+    setMinimumHeight(500);
+    setMinimumWidth(380);
+    move(10,10);
+
+    reset();
+    qDebug()<<geometry();
+    setStyleSheet("border:1px solid black;");
+    // auto tmp = new QLabel("TOURNAMENT IS HERERERERERERR",this);
+    show();
+    Worker->LetThemIn();// debug use
+    show();
 }
 
 Tournament::~Tournament(){
@@ -343,12 +348,17 @@ void Tournament::Update(){
     return ;
 }
 
+int Tournament::get_highlight_index(){
+    return highlight_index;
+}
+
+void Tournament::set_highlight_index(int hi){
+    highlight_index = hi;
+    emit highlight_index_changed(hi);
+}
+
 void Tournament::paintEvent(QPaintEvent* event){
-    QPainter painter(this);
-    painter.setPen(QPen(Qt::gray,3));
-    QList<QLineF> tmp;
-    for(auto i:connections) tmp.push_back(*i);
-    painter.drawLines(tmp);
+    for(int i=0;i<connections.length();i++) connections[i]->display(highlight_index);
 }
 
 void Tournament::display_log(){
@@ -406,30 +416,34 @@ void Tournament_Worker::LetThemIn(){
         Q_ASSERT(player_pool.length()==PlayerNum);
         for(int i=0;i<player_pool.length();i++) player_pool[i]->probility=Probability;//更新probaility"请忽略错词qwq"
         for(int i=0;i<player_pool.length();++i) player_pool[i]->init(i,true);
-        for(int i=0;i<player_pool.length();i++) player_pool[i]->set_angle(calculate_angle(((double)i)/player_pool.length()));
         for(int i=0;i<player_pool.length();i++){
+            qDebug()<<player_pool[i]->graphics_center();
             for(int j=i+1;j<player_pool.length();j++){
-                tournament->connections.push_back(new QLineF(player_pool[i]->rect().center(),player_pool[j]->rect().center()));
+                tournament->connections.push_back(new Connection_Line(player_pool[i].data(),player_pool[j].data(),tournament));
                 player_pool[i]->add_connection(tournament->connections.back(),1);
                 player_pool[j]->add_connection(tournament->connections.back(),2);
             }
         }
+        for(int i=0;i<player_pool.length();i++){
+            connect(player_pool[i].data(),&Player::angle_changed,[this](){tournament->update();});
+        }
+        for(int i=0;i<player_pool.length();i++) player_pool[i]->set_angle(calculate_angle(((double)i)/player_pool.length()));
         return ;
     }
     int input_num=0;
     // for(auto it=player_pool.begin();it!=player_pool.end();++it){
     for(int i=0;i<player_pool.length();i++){
-        auto it = player_pool[i];
-        if((it)->get_type()==ELIMINATION){
-            (it)=Winner_list[input_num]->clone();
+        if(player_pool[i]->get_type()==ELIMINATION){
+            player_pool[i]=Winner_list[input_num]->clone();
             ++input_num;
             // for(auto ittt=player_pool.begin();it!=player_pool.end();ittt++){
+            connect(player_pool[i].data(),&Player::angle_changed,[this](){tournament->update();});
             for(int j=0;j<player_pool.length();j++){
-                auto ittt = player_pool[j];
-                if((ittt)->get_type()==ELIMINATION) continue;
-                tournament->connections.push_back(new QLineF((it)->rect().center(),(ittt)->rect().center()));
-                (it)->add_connection(tournament->connections.back(),1);
-                (ittt)->add_connection(tournament->connections.back(),2);
+                if((player_pool[j])->get_type()==ELIMINATION) continue;
+                if(j==i) continue;
+                tournament->connections.push_back(new Connection_Line(player_pool[i].data(),player_pool[j].data(),tournament));
+                (player_pool[i])->add_connection(tournament->connections.back(),1);
+                (player_pool[j])->add_connection(tournament->connections.back(),2);
             }
         }
     }
@@ -445,8 +459,12 @@ void Tournament_Worker::Competition(){
     //     tournament->update();
     //     QThread::msleep(300);
     // }
+    QPropertyAnimation* anim = new QPropertyAnimation(tournament,"highlight_index",tournament);
+    anim->setStartValue(0);
+    anim->setEndValue(Tournament::PlayerNum);
+    anim->setDuration(500);
+    anim->start(QAbstractAnimation::DeleteWhenStopped);
     tournament->update();
-    tournament->highlight_index=-1;
     for(int i=0;i<player_pool.length()-1;++i)
         for(int j=i+1;j<player_pool.length();++j)
             one_vs_one(i,j);
@@ -466,6 +484,8 @@ void Tournament_Worker::KickThemOut(){
     std::sort(lst.begin(),lst.end(),PlayerPtrScore_Compare);
     Elim_list.append(lst.mid(lst.length()-Elim_num,Elim_num));
     for(int i=0;i<Elim_num;++i){Elim_list[i]->get_type()=ELIMINATION;Elim_list[i]->eliminate();}
+    tournament->trash_can.empty();
+    tournament->update();
     return;
 }
 

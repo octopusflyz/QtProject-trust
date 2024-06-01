@@ -7,7 +7,7 @@
 #include "match_result.h"
 #define ELIMINATION 10
 
-
+class Connection_Line;
 
 class Player : public QWidget
 {
@@ -32,13 +32,15 @@ public:
     double get_angle();
     void goto_angle(double ang);
     void load_image(QString file_name="");
+    QPointF graphics_center();
 
-    QVector<QLineF*> connections;
-    void add_connection(QLineF* line,int id);
+    QVector<Connection_Line*> connections;
+    void add_connection(Connection_Line* line,int id);
     void clear_connection();
 
     void eliminate();
     void display_score();
+    void paintEvent(QPaintEvent* event);
 
     QString name;
     virtual void init(int id,bool hard = false);
@@ -68,6 +70,28 @@ public:
     }
 
     friend QDebug operator << (QDebug debug, Player_Pair p);
+};
+
+
+
+class Connection_Line:public QWidget{
+    Q_OBJECT
+public:
+    Connection_Line(Player* fr,Player* t,QWidget* parent);
+    Player* from;
+    Player* to;
+    bool is_dead;
+    void display(int hightlight_idx);
+    void eliminate();
+};
+
+class Trash_Can{
+public:
+    QVector<Connection_Line*> bin;
+    Trash_Can(QWidget* parent);
+    QWidget* widget_tournament;
+    void push_back(Connection_Line* conn);
+    void empty();
 };
 
 class Player_Cooperator : public Player{

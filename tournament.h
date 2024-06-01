@@ -69,6 +69,7 @@ class Sandbox_ui;
 class Tournament : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY(int highlight_index READ get_highlight_index WRITE set_highlight_index NOTIFY highlight_index_changed)
 public:
     explicit Tournament(pg_allplayers* mui,QWidget *parent = nullptr);
     ~Tournament();
@@ -85,11 +86,15 @@ public:
     QSharedPointer<QSignalMapper> PlayerTypeNum_signal;
     QVector<int> Order_change;//辅助量，用于PlayerNum_Change函数
 
-    QVector<QLineF*> connections;
+    QVector<Connection_Line*> connections;
     void clear_connections();
     int highlight_index;
-    void paintEvent(QPaintEvent* event);
+    Trash_Can trash_can;
 
+    int get_highlight_index();
+    void set_highlight_index(int h_i);
+
+    void paintEvent(QPaintEvent* event);
 
     //value-matrix部分
     QSharedPointer<Judge> judge;
@@ -124,6 +129,8 @@ public:
     void one_vs_all(int id);//1-all比赛
     void display_log();//似乎是debug用的？
 
+signals:
+    void highlight_index_changed(int);
 
 public slots:
     //注：所有的change函数都只负责对cache更新，当耗时运算完成后会emit更新信号完成更新

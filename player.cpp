@@ -1,6 +1,8 @@
 #include "player.h"
+#include "tournament.h"
 #include <QRandomGenerator>
 #include <QPropertyAnimation>
+#include <QPainter>
 
 int Player::graphics_radius = 150;
 int Player::graphics_x = 175;
@@ -56,6 +58,8 @@ void Player::update_position(double ang){
     graphics_label->setMinimumSize(image->size());
     move(cos(angle)*graphics_radius+graphics_x,sin(angle)*graphics_radius+graphics_y);
     score_label->move(-cos(angle)*score_radius+score_x,-sin(angle)*score_radius+score_y);
+    update();
+    parentWidget()->update();
 }
 
 void Player::load_image(QString file_name/* = "" */){
@@ -64,28 +68,38 @@ void Player::load_image(QString file_name/* = "" */){
     *image = image->scaledToHeight(40,Qt::SmoothTransformation);
 }
 
-void Player::add_connection(QLineF* line,int id){//id=1:from && id=2:to
-    connections.push_back(line);
-    if(id==1){
-        connect(this,&Player::angle_changed,[&](double){line->setP1(this->rect().center());});
-    }
-    else{
-        connect(this,&Player::angle_changed,[&](double){line->setP2(this->rect().center());});
-    }
+QPointF Player::graphics_center(){
+    return geometry().topLeft()+QPointF(graphics_label->width()/2,graphics_label->height()/2);
+}
+
+void Player::add_connection(Connection_Line* line,int id){//id=1:from && id=2:to
+    connections.push_back(line);    
 }
 
 void Player::clear_connection(){
-    for(auto l:connections) l->setLine(0,0,0,0);
+    for(int i=0;i<connections.length();i++){
+        connections[i]->eliminate();
+    }
     connections.clear();
+}
+
+void Player::paintEvent(QPaintEvent* e){
+    QPainter painter(this);
+    painter.setPen(QPen(Qt::black,1));
+    painter.drawEllipse(graphics_center()-geometry().topLeft(),5,5);
+    qDebug()<<"Player"<<curr_id<<graphics_center();
+    // qDebug()<<curr_id<<graphics_label->geometry()<<score_label->geometry();
+    painter.setPen(QPen(Qt::green,1));
+    painter.drawRect(rect());
 }
 
 void Player::eliminate(){
     clear_connection();
     score_label->hide();
-    auto anim = new QPropertyAnimation(graphics_label,"pos",this);
-    anim->setStartValue(graphics_label->rect());
+    auto anim = new QPropertyAnimation(graphics_label,"geometry",this);
+    anim->setStartValue(graphics_label->geometry());
     double dis = QRandomGenerator::global()->generateDouble()*20;
-    anim->setEndValue(QRectF(graphics_label->rect().topLeft()+QPointF(cos(angle)*dis,sin(angle)*dis),QSize(0,0)));
+    anim->setEndValue(QRectF(graphics_label->geometry().topLeft()+QPointF(cos(angle)*dis,sin(angle)*dis),QSize(0,0)));
     connect(anim,&QPropertyAnimation::finished,[=](){this->hide();});
     anim->start(QAbstractAnimation::DeleteWhenStopped);
 }
@@ -118,7 +132,47 @@ QDebug operator << (QDebug debug, Player_Pair p){
 
 int Player::random_mistake(int choice){
     int randomNumber=QRandomGenerator::global()->bounded(1,101);
-    return (randomNumber<=probility ? choice : 1-choice);
+    return (randomNumber>probility ? choice : 1-choice);
+}
+
+Connection_Line::Connection_Line(Player* fr,Player* t,QWidget* parent):QWidget(parent),from(fr),to(t){
+    is_dead=false;
+}
+
+void Connection_Line::display(int highlight_idx){
+    QPainter painter(parentWidget());
+    painter.setPen(QPen(Qt::gray,1));
+    if(highlight_idx==from->curr_id||highlight_idx==to->curr_id){
+        painter.setPen(QPen(Qt::GlobalColor::darkYellow,1));
+    }
+    painter.drawLine(from->graphics_center(),to->graphics_center());
+}
+
+void Connection_Line::eliminate(){
+    if(is_dead) return;
+    is_dead=true;
+    dynamic_cast<Tournament*>(parentWidget())->trash_can.push_back(this);
+}
+
+Trash_Can::Trash_Can(QWidget* parent):widget_tournament(parent){
+    bin.clear();
+}
+
+void Trash_Can::push_back(Connection_Line* conn){
+    bin.push_back(conn);
+}
+
+void Trash_Can::empty(){
+    Tournament* tournament = dynamic_cast<Tournament*>(widget_tournament);
+    for(int i=0;i<bin.length();i++){
+        tournament->connections.erase(\
+        std::remove(tournament->connections.begin(),tournament->connections.end(),bin[i]),\
+        tournament->connections.end());
+    }
+    // for(int i=0;i<bin.length();i++){
+    //     delete bin[i];
+    // }
+    bin.clear();
 }
 
 Player_Cooperator::Player_Cooperator(QWidget *parent) : Player(parent){

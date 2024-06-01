@@ -69,5 +69,6 @@
         <file>image/cheater_hr.png</file>
         <file>image/detective_hr.png</file>
         <file>image/grudger_hr.png</file>
+        <file>sounds/The_Road_Not_Taken.flac</file>
     </qresource>
 </RCC>

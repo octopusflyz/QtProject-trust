@@ -1,7 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-
+#include<QAudioOutput>
+#include <QMediaPlayer>
 #include <QMainWindow>
 #include<QWidget>
 
@@ -18,6 +19,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void Play();
+    QSharedPointer<QMediaPlayer> music_player;
+    QSharedPointer<QAudioOutput> audioOutput;
+    int music_flag=0;
 
 private:
     Ui::MainWindow *ui;

@@ -142,6 +142,7 @@ void pg_mistakes::left_opponent(QLabel* opponent){
     user_b->setDuration(1000);
 
     connect(coin_animation,&QPropertyAnimation::finished,this,[=](){
+        opponent->setGeometry(QRect(140,260,120,160));
         opponent->show();
     });
     connect(coin_animationb,&QPropertyAnimation::finished,this,[=](){
@@ -237,6 +238,7 @@ void pg_mistakes::third_opponent(int round){
 }
 void pg_mistakes::on_continueButton_clicked()
 {
+    qDebug()<<myround;
     if(myround==1){
 
         first_opponent(1);}

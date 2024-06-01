@@ -19,6 +19,7 @@ pg_allplayers::pg_allplayers(QWidget *parent)
 
     connect(ui->spinBox_11,&QSpinBox::valueChanged,ui->horizontalSlider_3,&QSlider::setValue);
     connect(ui->horizontalSlider_3,&QSlider::valueChanged,ui->spinBox_11,&QSpinBox::setValue);
+
     ui->horizontalSlider_1->setValue(10);
     ui->horizontalSlider_2->setValue(5);
     ui->horizontalSlider_3->setValue(5);
@@ -40,3 +41,13 @@ pg_allplayers::~pg_allplayers()
 {
     delete ui;
 }
+
+void pg_allplayers::on_pushButton_2_clicked()
+{
+    if(flag%2==0)
+    ui->pushButton_2->setText("Stop");
+    else
+         ui->pushButton_2->setText("Start");
+    flag++;
+}
+

@@ -8,7 +8,6 @@
         <file>image/machine_10.png</file>
         <file>image/machine_11.png</file>
         <file>image/machine_update.png</file>
-        <file>image/tournament.png</file>
         <file>image/what to do.png</file>
         <file>image/random.png</file>
         <file>image/simpleton.png</file>
@@ -44,5 +43,26 @@
         <file>image/copycat_lefthappy.png</file>
         <file>image/copycat_leftsad.png</file>
         <file>image/copycat_puzzle.png</file>
+        <file>image/tour1.png</file>
+        <file>image/tour2.png</file>
+        <file>image/tour5.png</file>
+        <file>image/tour6.png</file>
+        <file>image/tour9.png</file>
+        <file>image/tour10.png</file>
+        <file>image/tour3.png</file>
+        <file>image/tour4.png</file>
+        <file>image/tour7.png</file>
+        <file>image/tour11.png</file>
+        <file>image/tour8.png</file>
+        <file>image/right1.png</file>
+        <file>image/right2.png</file>
+        <file>image/right3.png</file>
+        <file>image/right4.png</file>
+        <file>image/right5.png</file>
+        <file>image/right6.png</file>
+        <file>image/right7.png</file>
+        <file>image/right8.png</file>
+        <file>image/right9.png</file>
+        <file>image/right10.png</file>
     </qresource>
 </RCC>

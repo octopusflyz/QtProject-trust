@@ -64,7 +64,7 @@ background-color: rgb(240, 240, 240);</string>
     <string>Grudger</string>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser">
+  <widget class="QTextBrowser" name="text1">
    <property name="geometry">
     <rect>
      <x>470</x>
@@ -126,6 +126,420 @@ background-color: rgb(240, 240, 240);</string>
     <string>All Cooperate</string>
    </property>
   </widget>
+  <widget class="QLabel" name="left1">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>30</y>
+     <width>450</width>
+     <height>400</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/tour1.png);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left2">
+   <property name="geometry">
+    <rect>
+     <x>24</x>
+     <y>38</y>
+     <width>441</width>
+     <height>392</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/tour2.png);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left3">
+   <property name="geometry">
+    <rect>
+     <x>22</x>
+     <y>29</y>
+     <width>432</width>
+     <height>401</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/tour3.png);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left4">
+   <property name="geometry">
+    <rect>
+     <x>16</x>
+     <y>27</y>
+     <width>432</width>
+     <height>414</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/tour4.png);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left5">
+   <property name="geometry">
+    <rect>
+     <x>36</x>
+     <y>26</y>
+     <width>417</width>
+     <height>406</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/tour5.png);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left6">
+   <property name="geometry">
+    <rect>
+     <x>49</x>
+     <y>22</y>
+     <width>394</width>
+     <height>419</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/tour6.png);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left7">
+   <property name="geometry">
+    <rect>
+     <x>13</x>
+     <y>23</y>
+     <width>436</width>
+     <height>406</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/tour7.png);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left8">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>16</y>
+     <width>407</width>
+     <height>421</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/tour8.png);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left9">
+   <property name="geometry">
+    <rect>
+     <x>-3</x>
+     <y>25</y>
+     <width>468</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/tour9.png);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left10">
+   <property name="geometry">
+    <rect>
+     <x>34</x>
+     <y>25</y>
+     <width>416</width>
+     <height>399</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/tour10.png);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>440</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt &quot;Segoe Print&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Continue</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="left11">
+   <property name="geometry">
+    <rect>
+     <x>1</x>
+     <y>33</y>
+     <width>460</width>
+     <height>406</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/tour11.png);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right1">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>30</y>
+     <width>381</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right1.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right2">
+   <property name="geometry">
+    <rect>
+     <x>418</x>
+     <y>22</y>
+     <width>348</width>
+     <height>153</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right2.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right3">
+   <property name="geometry">
+    <rect>
+     <x>418</x>
+     <y>18</y>
+     <width>384</width>
+     <height>150</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right3.png);
+</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right4">
+   <property name="geometry">
+    <rect>
+     <x>421</x>
+     <y>16</y>
+     <width>424</width>
+     <height>164</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right4.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right5">
+   <property name="geometry">
+    <rect>
+     <x>422</x>
+     <y>20</y>
+     <width>430</width>
+     <height>157</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right5.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right6">
+   <property name="geometry">
+    <rect>
+     <x>418</x>
+     <y>25</y>
+     <width>446</width>
+     <height>165</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right6.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right7">
+   <property name="geometry">
+    <rect>
+     <x>411</x>
+     <y>20</y>
+     <width>487</width>
+     <height>162</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right7.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right8">
+   <property name="geometry">
+    <rect>
+     <x>408</x>
+     <y>25</y>
+     <width>477</width>
+     <height>154</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right8.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right9">
+   <property name="geometry">
+    <rect>
+     <x>413</x>
+     <y>18</y>
+     <width>452</width>
+     <height>165</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right9.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="right10">
+   <property name="geometry">
+    <rect>
+     <x>411</x>
+     <y>20</y>
+     <width>409</width>
+     <height>144</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/right10.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>AllCheat</zorder>
+  <zorder>Copycat</zorder>
+  <zorder>Grudger</zorder>
+  <zorder>text1</zorder>
+  <zorder>Detective</zorder>
+  <zorder>AllCooperate</zorder>
+  <zorder>left1</zorder>
+  <zorder>left2</zorder>
+  <zorder>left3</zorder>
+  <zorder>left4</zorder>
+  <zorder>left5</zorder>
+  <zorder>left6</zorder>
+  <zorder>left7</zorder>
+  <zorder>left8</zorder>
+  <zorder>left9</zorder>
+  <zorder>left10</zorder>
+  <zorder>pushButton</zorder>
+  <zorder>left11</zorder>
+  <zorder>right1</zorder>
+  <zorder>right3</zorder>
+  <zorder>right2</zorder>
+  <zorder>right4</zorder>
+  <zorder>right5</zorder>
+  <zorder>right6</zorder>
+  <zorder>right7</zorder>
+  <zorder>right8</zorder>
+  <zorder>right9</zorder>
+  <zorder>right10</zorder>
  </widget>
  <resources/>
  <connections/>

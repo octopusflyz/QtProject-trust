@@ -89,7 +89,7 @@ void Player::paintEvent(QPaintEvent* e){
     painter.drawEllipse(graphics_center()-geometry().topLeft(),5,5);
     qDebug()<<"Player"<<curr_id<<graphics_center();
     // qDebug()<<curr_id<<graphics_label->geometry()<<score_label->geometry();
-    painter.setPen(QPen(Qt::green,1));
+    painter.setPen(QPen(Qt::green,1)) ;
     painter.drawRect(rect());
 }
 

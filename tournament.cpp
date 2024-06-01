@@ -4,6 +4,8 @@
 #include "slider.h"
 #include <QPainter>
 #include <QPropertyAnimation>
+#include<QEvent>
+#include<QTimer>
 const double TAU = acos(-1)*2;
 
 int Tournament::PlayerNum = 24;
@@ -78,11 +80,11 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
     Worker=new Tournament_Worker(PlayerNum,this);//前面的变量初始化之后调用一次Update函数就好了
     mutex=QSharedPointer<QMutex>::create();
     //update_mutex=QSharedPointer<QMutex>::create();
-    Worker_Thread=QSharedPointer<QThread>::create(this);
     Worker->mutex=mutex;
     //Worker->update_mutex=update_mutex;
-    Worker->moveToThread(Worker_Thread.data());//移动到新线程中
-    Worker_Thread->start();
+    // Worker_Thread=QSharedPointer<QThread>::create(this);
+    // Worker->moveToThread(Worker_Thread.data());//移动到新线程中
+    // Worker_Thread->start();
 
     Order_change.resize(type_number);
     for(int i=0;i<type_number;++i) Order_change.append(i);
@@ -412,6 +414,7 @@ inline double calculate_angle(double t){
 }
 
 void Tournament_Worker::LetThemIn(){
+    qDebug()<<"LETTHEMIN";
     if(player_pool.empty()){
         player_pool.clear();
         for(int j=0;j<PlayerTypeNum[0];++j) player_pool.append(QSharedPointer<Player>(new Player_Copy_Cat(tournament)));
@@ -468,6 +471,7 @@ void Tournament_Worker::Competition(){
     //     tournament->update();
     //     QThread::msleep(300);
     // }
+    qDebug()<<"COMPETITION!";
     QPropertyAnimation* anim = new QPropertyAnimation(tournament,"highlight_index",tournament);
     anim->setStartValue(0);
     anim->setEndValue(Tournament::PlayerNum);
@@ -483,11 +487,13 @@ void Tournament_Worker::Competition(){
     Winner_list.append(lst.mid(0,Elim_num));
     for(int it=0;it<PlayerNum;++it){
         player_pool[it]->init(it);//注意到你judge里会改id加的
+        qDebug()<<"id:"<<it<<" "<<player_pool[it]->score<<" "<<player_pool[it]->name;
     }
     return;
 }
 
 void Tournament_Worker::KickThemOut(){
+    qDebug()<<"KICKTHEMOUT";
     Elim_list.clear();
     QList<QSharedPointer<Player>> lst=player_pool;
     std::sort(lst.begin(),lst.end(),PlayerPtrScore_Compare);
@@ -549,7 +555,11 @@ void Tournament_Worker::Work_OnStep(int step){
 void Tournament_Worker::Tournament_Round(){
     while(true){
         qDebug()<<"start round";
-        QThread::msleep(300);
+        //QThread::msleep(300);
+        QEventLoop loop;
+        QTimer::singleShot(3000,&loop,&QEventLoop::quit);
+        loop.exec();
+        qDebug()<<"loop ended!";
         if(Get_flag()){
             Work_OnStep(Get_step());
         }

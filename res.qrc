@@ -60,5 +60,14 @@
         <file>sounds/squeak.mp3</file>
         <file>sounds/thump.mp3</file>
         <file>sounds/whoosh.mp3</file>
+        <file>image/right_excited.png</file>
+        <file>image/right_happy.png</file>
+        <file>image/right_hate.png</file>
+        <file>image/right_sad.png</file>
+        <file>image/cooperator_hr.png</file>
+        <file>image/copycat_hr.png</file>
+        <file>image/cheater_hr.png</file>
+        <file>image/detective_hr.png</file>
+        <file>image/grudger_hr.png</file>
     </qresource>
 </RCC>

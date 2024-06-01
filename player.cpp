@@ -134,6 +134,7 @@ QDebug operator << (QDebug debug, Player_Pair p){
 
 int Player::random_mistake(int choice){
     int randomNumber=QRandomGenerator::global()->bounded(1,101);
+
     return (randomNumber>probility ? choice : 1-choice);
 }
 
@@ -175,6 +176,7 @@ void Trash_Can::empty(){
     //     delete bin[i];
     // }
     bin.clear();
+
 }
 
 Player_Cooperator::Player_Cooperator(QWidget *parent) : Player(parent){

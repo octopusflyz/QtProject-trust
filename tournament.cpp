@@ -353,6 +353,9 @@ void Tournament::PlayerNum_Change(int index){
     trash_can.empty();
     Worker->player_pool.clear();
     Worker->LetThemIn();
+    locker.unlock();
+    Worker->Set_flag(0,false,false);
+    //emit Connect_signal();
     return /*QVector<int>(PlayerTypeNum_cache)*/;
 }
 void Tournament::ValueMatrix_Change(unsigned int index){
@@ -399,7 +402,7 @@ void Tournament::Update(){
         for(int j=0;j<2;++j)
             Worker->judge->reward_reset(i,j,ValMatrix_cache[i][j][0],ValMatrix_cache[i][j][1]);
     for(int i=0;i<2;++i)
-        for(int j=0;j<2;++j) qDebug()<<"Val_matrix:（"<<i<<","<<j<<")"<<ValMatrix_cache[i][j][0]<<" "<<ValMatrix_cache[i][j][1];
+        for(int j=0;j<2;++j) qDebug()<<"Val_matrix:("<<i<<","<<j<<")"<<ValMatrix_cache[i][j][0]<<" "<<ValMatrix_cache[i][j][1];
     Worker->num_games=num_games_cache;
     Worker->Elim_num=Elim_num_cache;
     Worker->Probability=Probility_cache;
@@ -655,7 +658,7 @@ void Tournament_Worker::Button_OnPush(int index){
     }
     if(index==2){
         Set_flag(0,false,false);
-        emit Update_signal();
+        //emit Update_signal();
         return;
     }
 }

@@ -32,10 +32,10 @@ public:
     void third_opponent(bool mychoice);
     void fourth_opponent(bool mychoice);
     void fifth_opponent(bool mychoice);
-    void right_opponent(QLabel* opponent1, const Match_Result &result);
+    void right_opponent(QLabel* opponent1,Match_Result result);
     void left_opponent();
     void show_hat(QLabel* opponent);
-   void reaction(QLabel* opponent,const Match_Result &result);//
+   void reaction(QLabel* opponent,Match_Result result);//
     void hiding_all();
     QList <Match_Result> myhistory ;
     //插入的代码

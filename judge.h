@@ -7,7 +7,7 @@
 //1-1比赛类
 class Judge : public QWidget
 {
-    Q_OBJECT
+    //Q_OBJECT
 public:
     explicit Judge(QWidget *parent = nullptr);
     //Value_Matrix

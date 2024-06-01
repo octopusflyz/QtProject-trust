@@ -9,7 +9,7 @@ int Player::graphics_x = 175;
 int Player::graphics_y = 200;
 int Player::score_radius = 50;
 int Player::score_x = 0;
-int Player::score_y = -22;
+int Player::score_y = 22;
 
 Player::Player(QWidget *parent)
     : QWidget{parent}
@@ -18,10 +18,11 @@ Player::Player(QWidget *parent)
     angle=0;
     score=0;
     graphics_label = new QLabel(this);
-    score_label = new QLabel(this);
+    score_label = new QLabel(parentWidget());
     image = new QImage();
     graphics_label->setStyleSheet("border: 1px solid blue;");
     score_label->setStyleSheet("border: 1px solid green;");
+    score_label->raise();
     connect(this,&Player::angle_changed,this,&Player::update_position);
 }
 
@@ -57,7 +58,8 @@ void Player::update_position(double ang){
     graphics_label->setPixmap(tmp);
     graphics_label->setMinimumSize(image->size());
     move(cos(angle)*graphics_radius+graphics_x,sin(angle)*graphics_radius+graphics_y);
-    score_label->move(-cos(angle)*score_radius+score_x,-sin(angle)*score_radius+score_y);
+    score_label->move(cos(angle)*(graphics_radius-score_radius)+graphics_x,sin(angle)*(graphics_radius-score_radius)+graphics_y);
+    show();
     update();
     parentWidget()->update();
 }
@@ -249,6 +251,7 @@ Player_Grudger::Player_Grudger(QWidget *parent) : Player(parent){
 QSharedPointer<Player> Player_Grudger::clone(){
     auto tmp = QSharedPointer<Player>(new Player_Grudger(parentWidget()));
     tmp->set_angle(angle);
+    // tmp->show();
     return tmp;
 }
 

@@ -75,7 +75,7 @@ public:
     QSharedPointer<QMutex> mutex;
     //QSharedPointer<QMutex> update_mutex;
     Tournament_Worker *Worker;
-    int PlayerNum;
+    static int PlayerNum;
     //选手类别数量部分
     static int type_number;//类别的数量
     static QVector<int> Init_PlayerTypeNum;//我随便设的，看你们ui怎么设置比较方便

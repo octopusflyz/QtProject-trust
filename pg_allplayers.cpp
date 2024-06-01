@@ -19,8 +19,9 @@ pg_allplayers::pg_allplayers(QWidget *parent)
 
     // connect(ui->spinBox_11,&QSpinBox::valueChanged,ui->horizontalSlider_3,&QSlider::setValue);
     // connect(ui->horizontalSlider_3,&QSlider::valueChanged,ui->spinBox_11,&QSpinBox::setValue);
-    Tournament *T=new Tournament(this,parent);
-
+    Tournament *T=new Tournament(this,this);
+    T->lower();
+    setStyleSheet("*{border: 1px solid red;} QPushButton:hover{ background-color: green; }");
 }
 
 

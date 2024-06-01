@@ -5,6 +5,7 @@
 #include <QPainter>
 const double TAU = acos(-1)*2;
 
+int Tournament::PlayerNum = 24;
 int Tournament::type_number = 8;
 QVector<int> Tournament::Init_PlayerTypeNum={3,3,3,3,3,3,3,3};
 int Tournament::Init_ValMatrix[2][2][2]={{{2,2},{-1,3}},{{3,-1},{0,0}}};
@@ -27,7 +28,6 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
     //下面是所有变量都已经定义好了之后各个信号和槽之间的链接关系的一个实现
     //注意：我没有写QSpinBox的绑定(就都合作都cheat的val应该是相等的)，所以需要在外面绑定好
     /*下面是原来文件的构造部分*/
-    int Player_num=24;
     Player_slider.resize(8);
     Player_slider[0]=mui->ui->widget->get_qslider();
     Player_slider[1]=mui->ui->widget_2->get_qslider();
@@ -61,9 +61,9 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
                             mui->ui->spinBox_4},\
                           {mui->ui->spinBox_7,\
                             mui->ui->spinBox_8}}};
-    Start_button=mui->ui->pushButton;
-    Step_button=mui->ui->pushButton_2;
-    Reset_button=mui->ui->pushButton_3;
+    Start_button=mui->ui->pushButton_2;
+    Step_button=mui->ui->pushButton_3;
+    Reset_button=mui->ui->pushButton;
     // resize(150,400);
     // move(0,0);
 
@@ -138,7 +138,19 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
 
     connect(Reset_button,&QPushButton::clicked,this,&Tournament::reset);
 
+    //ui
+    setMinimumHeight(500);
+    setMinimumWidth(380);
+    move(10,10);
+
     reset();
+    qDebug()<<rect();
+    setStyleSheet("border:1px solid black;");
+    // auto tmp = new QLabel("TOURNAMENT IS HERERERERERERR",this);
+    show();
+    Worker->LetThemIn();// debug use
+    show();
+    // judge->hide();
     // //我不知道怎么留构造函数的接口比较方便
     // //下面是所有变量都已经定义好了之后各个信号和槽之间的链接关系的一个实现
     // //注意：我没有写QSpinBox的绑定(就都合作都cheat的val应该是相等的)，所以需要在外面绑定好
@@ -382,7 +394,7 @@ inline double calculate_angle(double t){
 
 void Tournament_Worker::LetThemIn(){
     if(player_pool.empty()){
-        player_pool.resize(PlayerNum);
+        player_pool.clear();
         for(int j=0;j<PlayerTypeNum[0];++j) player_pool.append(QSharedPointer<Player>(new Player_Copy_Cat(tournament)));
         for(int j=0;j<PlayerTypeNum[1];++j) player_pool.append(QSharedPointer<Player>(new Player_Cheater(tournament)));
         for(int j=0;j<PlayerTypeNum[2];++j) player_pool.append(QSharedPointer<Player>(new Player_Cooperator(tournament)));
@@ -391,9 +403,10 @@ void Tournament_Worker::LetThemIn(){
         for(int j=0;j<PlayerTypeNum[5];++j) player_pool.append(QSharedPointer<Player>(new Player_Copy_Kitten(tournament)));
         for(int j=0;j<PlayerTypeNum[6];++j) player_pool.append(QSharedPointer<Player>(new Player_Simpleton(tournament)));
         for(int j=0;j<PlayerTypeNum[7];++j) player_pool.append(QSharedPointer<Player>(new Player_Random(tournament)));
-        for(auto it:player_pool) it->probility=Probability;//更新probaility"请忽略错词qwq"
+        Q_ASSERT(player_pool.length()==PlayerNum);
+        for(int i=0;i<player_pool.length();i++) player_pool[i]->probility=Probability;//更新probaility"请忽略错词qwq"
         for(int i=0;i<player_pool.length();++i) player_pool[i]->init(i,true);
-        for(int i=0;i<player_pool.length();i++) player_pool[i]->set_angle(((double)i)/player_pool.length());
+        for(int i=0;i<player_pool.length();i++) player_pool[i]->set_angle(calculate_angle(((double)i)/player_pool.length()));
         for(int i=0;i<player_pool.length();i++){
             for(int j=i+1;j<player_pool.length();j++){
                 tournament->connections.push_back(new QLineF(player_pool[i]->rect().center(),player_pool[j]->rect().center()));
@@ -404,30 +417,35 @@ void Tournament_Worker::LetThemIn(){
         return ;
     }
     int input_num=0;
-    for(auto it=player_pool.begin();it!=player_pool.end();++it){
-        if((*it)->get_type()==ELIMINATION){
-            (*it)=Winner_list[input_num]->clone();
+    // for(auto it=player_pool.begin();it!=player_pool.end();++it){
+    for(int i=0;i<player_pool.length();i++){
+        auto it = player_pool[i];
+        if((it)->get_type()==ELIMINATION){
+            (it)=Winner_list[input_num]->clone();
             ++input_num;
-            for(auto ittt=player_pool.begin();it!=player_pool.end();ittt++){
-                if((*ittt)->get_type()==ELIMINATION) continue;
-                tournament->connections.push_back(new QLineF((*it)->rect().center(),(*ittt)->rect().center()));
-                (*it)->add_connection(tournament->connections.back(),1);
-                (*ittt)->add_connection(tournament->connections.back(),2);
+            // for(auto ittt=player_pool.begin();it!=player_pool.end();ittt++){
+            for(int j=0;j<player_pool.length();j++){
+                auto ittt = player_pool[j];
+                if((ittt)->get_type()==ELIMINATION) continue;
+                tournament->connections.push_back(new QLineF((it)->rect().center(),(ittt)->rect().center()));
+                (it)->add_connection(tournament->connections.back(),1);
+                (ittt)->add_connection(tournament->connections.back(),2);
             }
         }
     }
     std::stable_sort(player_pool.begin(),player_pool.end(),PlayerPtrType_Compare);
     for(int i=0;i<player_pool.length();++i) player_pool[i]->init(i,true);//希望我没理解错这个函数的意思(
-    for(int i=0;i<player_pool.length();i++) player_pool[i]->goto_angle(((double)i)/player_pool.length());
+    for(int i=0;i<player_pool.length();i++) player_pool[i]->goto_angle(calculate_angle(((double)i)/player_pool.length()));
     return ;
 }
 
 void Tournament_Worker::Competition(){
-    for(int i=0;i<player_pool.length();i++){
-        tournament->highlight_index = i;
-        tournament->update();
-        QThread::sleep(25);
-    }
+    // for(int i=0;i<player_pool.length();i++){
+    //     tournament->highlight_index = i;
+    //     tournament->update();
+    //     QThread::msleep(300);
+    // }
+    tournament->update();
     tournament->highlight_index=-1;
     for(int i=0;i<player_pool.length()-1;++i)
         for(int j=i+1;j<player_pool.length();++j)
@@ -483,7 +501,7 @@ void Tournament_Worker::Work_OnStep(int step){
     if(step==0){
         LetThemIn();
         emit Update_signal();//发出更新请求
-        QThread::sleep(50);//等更新
+        QThread::msleep(300);//等更新
         Set_step(1);
         return;
     }
@@ -501,7 +519,7 @@ void Tournament_Worker::Work_OnStep(int step){
 
 void Tournament_Worker::Tournament_Round(){
     while(true){
-        QThread::sleep(50);
+        QThread::msleep(300);
         if(Get_flag()){
             Work_OnStep(Get_step());
         }

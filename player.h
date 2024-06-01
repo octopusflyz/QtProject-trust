@@ -12,7 +12,7 @@
 class Player : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(double angle READ angle WRITE set_angle NOTIFY angle_changed)
+    Q_PROPERTY(double angle READ get_angle WRITE set_angle NOTIFY angle_changed)
 public:
     explicit Player(QWidget *parent = nullptr);
     int curr_id;
@@ -29,6 +29,7 @@ public:
     QLabel* score_label;
     QImage* image;
     void set_angle(double ang);
+    double get_angle();
     void goto_angle(double ang);
     void load_image(QString file_name="");
 

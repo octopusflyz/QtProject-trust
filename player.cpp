@@ -2,9 +2,9 @@
 #include <QRandomGenerator>
 #include <QPropertyAnimation>
 
-int Player::graphics_radius = 200;
-int Player::graphics_x = 250;
-int Player::graphics_y = 265;
+int Player::graphics_radius = 150;
+int Player::graphics_x = 175;
+int Player::graphics_y = 200;
 int Player::score_radius = 50;
 int Player::score_x = 0;
 int Player::score_y = -22;
@@ -18,6 +18,8 @@ Player::Player(QWidget *parent)
     graphics_label = new QLabel(this);
     score_label = new QLabel(this);
     image = new QImage();
+    graphics_label->setStyleSheet("border: 1px solid blue;");
+    score_label->setStyleSheet("border: 1px solid green;");
     connect(this,&Player::angle_changed,this,&Player::update_position);
 }
 
@@ -27,12 +29,16 @@ void Player::init(int id, bool hard /* = false*/){
         score=0;
         score_label->setText("");
         score_label->hide();
-        graphics_label->setPixmap(QPixmap::fromImage(*image));
     }
 }
 
 void Player::set_angle(double ang){
     angle = ang;
+    emit angle_changed(ang);
+}
+
+double Player::get_angle(){
+    return angle;
 }
 
 void Player::goto_angle(double ang){
@@ -43,7 +49,11 @@ void Player::goto_angle(double ang){
     anim->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
-void Player::update_position(double){
+void Player::update_position(double ang){
+    QPixmap tmp = QPixmap::fromImage(*image);
+    if(cos(ang)>0) tmp = tmp.transformed(QTransform().scale(-1,1),Qt::SmoothTransformation);
+    graphics_label->setPixmap(tmp);
+    graphics_label->setMinimumSize(image->size());
     move(cos(angle)*graphics_radius+graphics_x,sin(angle)*graphics_radius+graphics_y);
     score_label->move(-cos(angle)*score_radius+score_x,-sin(angle)*score_radius+score_y);
 }
@@ -51,6 +61,7 @@ void Player::update_position(double){
 void Player::load_image(QString file_name/* = "" */){
     if(file_name=="") file_name=name;
     image->load(":/image/"+file_name+".png");
+    *image = image->scaledToHeight(40,Qt::SmoothTransformation);
 }
 
 void Player::add_connection(QLineF* line,int id){//id=1:from && id=2:to
@@ -162,6 +173,7 @@ int Player_Copy_Cat::choice(const QList< Match_Result > & history){
 Player_Random::Player_Random(QWidget *parent) : Player(parent){
     name="random";
     type=7;
+    load_image();
 }
 
 QSharedPointer<Player> Player_Random::clone(){
@@ -177,6 +189,7 @@ int Player_Random::choice(const QList< Match_Result > & history){
 Player_Grudger::Player_Grudger(QWidget *parent) : Player(parent){
     name="grudger";
     type=3;
+    load_image();
 }
 
 QSharedPointer<Player> Player_Grudger::clone(){
@@ -195,6 +208,7 @@ int Player_Grudger::choice(const QList<Match_Result> & history){
 Player_Detective::Player_Detective(QWidget *parent) : Player(parent){
     name="detective";
     type=4;
+    load_image();
 }
 
 QSharedPointer<Player> Player_Detective::clone(){
@@ -218,6 +232,7 @@ int Player_Detective::choice(const QList< Match_Result > & history){
 Player_Copy_Kitten::Player_Copy_Kitten(QWidget *parent) : Player(parent){
     name="copy kitten";
     type=5;
+    load_image("copykitten");
 }
 
 
@@ -237,6 +252,7 @@ int Player_Copy_Kitten::choice(const QList< Match_Result > & history){
 Player_Simpleton::Player_Simpleton(QWidget *parent) : Player(parent){
     name="simpleton";
     type=6;
+    load_image();
 }
 
 QSharedPointer<Player> Player_Simpleton::clone(){

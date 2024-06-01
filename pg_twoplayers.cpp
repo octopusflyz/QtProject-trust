@@ -8,6 +8,7 @@
 #include<QSequentialAnimationGroup>
 #include<QParallelAnimationGroup>
 #include<QTimer>
+#include<QString>
 pg_twoplayers::pg_twoplayers(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::pg_twoplayers)
@@ -19,6 +20,11 @@ pg_twoplayers::pg_twoplayers(QWidget *parent)
     ui->machine_11->hide();
     ui->text2->hide();
     hiding_all();
+    ui->show_cheater->hide();
+    ui->show_cooperator->hide();
+    ui->show_copycat->hide();
+    ui->show_grudger->hide();
+    ui->show_detective->hide();
 
     //插入的代码
     myhistory.clear();
@@ -110,6 +116,7 @@ void pg_twoplayers::right_opponent(QLabel* opponent1,Match_Result result){
             ui->left->show();
             opponent1->setGeometry(QRect(485,250,120,160));
             opponent1->show();
+            score_show();
         }
     });
 
@@ -132,6 +139,9 @@ void pg_twoplayers::reaction(QLabel* opponent,Match_Result result){//1 coop 0 ch
     //
     qDebug()<<round<<":"<<result.action[0]<<" "<<result.action[1];
         if(result.action[0]==0&&result.action[1]==0){
+        current_score+=0;
+        opponent_score+=0;
+        total_score+=0;
         ui->machine_00->show();
         ui->left_hate->setGeometry(QRect(140,260,120,160));
         ui->left_hate->show();
@@ -139,6 +149,9 @@ void pg_twoplayers::reaction(QLabel* opponent,Match_Result result){//1 coop 0 ch
         ui->right_hate->show();
         }
         else if(result.action[0]==0&&result.action[1]==1){
+            current_score+=3;
+            opponent_score-=1;
+            total_score+=3;
             ui->machine_10->show();
             ui->left->hide();
         ui->left_excited->setGeometry(QRect(140,260,120,160));
@@ -147,6 +160,9 @@ void pg_twoplayers::reaction(QLabel* opponent,Match_Result result){//1 coop 0 ch
         ui->right_sad->show();
         }
         else if(result.action[0]==1&&result.action[1]==0){
+            current_score-=1;
+            opponent_score+=3;
+            total_score-=1;
             ui->machine_01->show();
             ui->left->hide();
         ui->left_sad->setGeometry(QRect(140,260,120,160));
@@ -155,6 +171,9 @@ void pg_twoplayers::reaction(QLabel* opponent,Match_Result result){//1 coop 0 ch
         ui->right_excited->show();
         }
         else if(result.action[0]==1&&result.action[1]==1){
+            current_score+=2;
+            opponent_score+=2;
+            total_score+=2;
              ui->machine_11->show();
              ui->left->hide();
              ui->left_happy->setGeometry(QRect(140,260,120,160));
@@ -310,31 +329,43 @@ pg_twoplayers::~pg_twoplayers()
 
 void pg_twoplayers::on_cheatButton_clicked()
 {
+    score_show();
     if(round<5){
+        ui->show_copycat->show();
         ui->text1->hide();
         ui->text2->show();
         first_opponent(0);
+
         //Group->start();
         //qDebug()<<round;
     }
     else if(round>=5&&round<10){
+        ui->show_copycat->hide();
+        ui->show_cheater->show();
         if(round==5)myhistory.clear();
           second_opponent(0);
         //Group_2->start();
     }
     else if(round>=10&&round<15){
+        ui->show_cheater->hide();
+        ui->show_cooperator->show();
          if(round==10)myhistory.clear();
         third_opponent(0);
     }
     else if(round>=15&&round<20){
+        ui->show_cooperator->hide();
+        ui->show_grudger->show();
          if(round==15)myhistory.clear();
         fourth_opponent(0);
     }
     else if(round>=20&&round<25){
+        ui->show_grudger->hide();
+        ui->show_detective->show();
          if(round==20)myhistory.clear();
         fifth_opponent(0);
     }
     round++;
+
     //animation->start();
    // animation_2->start();
    // coin_animation->start();
@@ -343,7 +374,9 @@ void pg_twoplayers::on_cheatButton_clicked()
 
 void pg_twoplayers::on_cooperateButton_clicked()
 {
+    score_show();
     if(round<5){
+        ui->show_copycat->show();
         ui->text1->hide();
         ui->text2->show();
         first_opponent(1);
@@ -353,23 +386,32 @@ void pg_twoplayers::on_cooperateButton_clicked()
        // qDebug()<<round;
     }
     else if(round>=5&&round<10){
+        ui->show_copycat->hide();
+        ui->show_cheater->show();
         if(round==5)myhistory.clear();
         second_opponent(1);
         //Group_2->start();
     }
     else if(round>=10&&round<15){
+        ui->show_cheater->hide();
+        ui->show_cooperator->show();
         if(round==10)myhistory.clear();
         third_opponent(1);
     }
     else if(round>=15&&round<20){
+        ui->show_cooperator->hide();
+        ui->show_grudger->show();
         if(round==15)myhistory.clear();
         fourth_opponent(1);
     }
     else if(round>=20&&round<25){
+        ui->show_grudger->hide();
+        ui->show_detective->show();
         if(round==20)myhistory.clear();
         fifth_opponent(1);
     }
     round++;
+
 }
 
 void pg_twoplayers::hiding_all(){
@@ -393,9 +435,18 @@ void pg_twoplayers::hiding_all(){
     ui->cooperator_h->hide();
     ui->grudger_h->hide();
     ui->detective_h->hide();
+
+
 }
 //插入的代码
 int pg_twoplayers::get_oppo_choice(int type,QList<Match_Result> &history){
     return player[type]->choice(history);
 }
 //插入的代码
+
+void pg_twoplayers::score_show(){
+    ui->score_user->setText(QString::number(current_score));
+    ui->score_opponent->setText(QString::number(opponent_score));
+    ui->score_total->setText(QString::number(total_score));
+
+}

@@ -42,13 +42,18 @@ public:
     //输入type,history得到对方的choice
     int get_oppo_choice(int type,QList<Match_Result> &history);//type代表的类型如下
     QVector<QSharedPointer<Judge>> judge;//用于计算博弈结果:judge 0--copycat
-        //     2--cheater 好像对应错了
-        //     1--cooperate
+        //     1--cheater
+        //     2--cooperate
         //     3--grudger
         //     4--detective
     QVector<QSharedPointer<Player>> player;//player 0-4对应顺序如上
     QSharedPointer<Player> player_user;//没用到，但可以先留着doge
     //插入的代码
+    void score_show();
+    int current_score=0;
+    int opponent_score=0;
+    int total_score=0;
+
 
 private slots:
     void on_cheatButton_clicked();
@@ -56,6 +61,7 @@ private slots:
     void on_cooperateButton_clicked();
 
 private:
+
     int round=0;
     bool flag=0;//记录animationchanges
     Ui::pg_twoplayers *ui;

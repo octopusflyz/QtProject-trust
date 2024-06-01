@@ -110,8 +110,11 @@ public:
     int Elim_num_cache;//每轮的淘汰人数
     int Probility_cache;//犯错概率，单位%
     QSlider* NumGame_slider;
+    QSpinBox* NumGame_spinbox;
     QSlider* ElimNum_slider;
+    QSpinBox *ElimNum_spinbox_1,*ElimNum_spinbox_2;
     QSlider* Prob_slider;
+    QSpinBox* Prob_spinbox;
     QSharedPointer<QSignalMapper> Rule_signal;
 
     //控制部分

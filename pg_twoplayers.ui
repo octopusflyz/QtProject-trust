@@ -506,7 +506,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(240, 240, 240);
+    <string notr="true">background-color: rgb(245, 245, 245);
 font: 9pt &quot;Segoe Print&quot;;</string>
    </property>
    <property name="frameShape">

@@ -84,8 +84,8 @@ else if(round==8){ui->left9->show();ui->right8->show();}
 }
 
 
-void pg_tournament::on_Copycat_clicked()
-{
+// void pg_tournament::on_Copycat_clicked()
+// {
 
-}
+// }
 

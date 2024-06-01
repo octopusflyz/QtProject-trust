@@ -15,6 +15,11 @@ public:
     explicit pg_tournament(QWidget *parent = nullptr);
     ~pg_tournament();
     void paintEvent(QPaintEvent *event);
+    void hideall();
+    int round=0;
+
+private slots:
+    void on_pushButton_clicked();
 
 private:
     Ui::pg_tournament *ui;

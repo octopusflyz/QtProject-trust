@@ -14,6 +14,7 @@ class pg_allplayers : public QWidget
 public:
     explicit pg_allplayers(QWidget *parent = nullptr);
     ~pg_allplayers();
+
     int flag;
 
 //private:

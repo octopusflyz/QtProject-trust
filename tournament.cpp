@@ -345,6 +345,14 @@ void Tournament::PlayerNum_Change(int index){
         Player_slider[it]->blockSignals(false);
         Player_slider_ui[it]->update_value();
     }
+    for(int it=0;it<PlayerNum;++it){
+        Worker->player_pool[it]->hide();
+        Worker->player_pool[it]->eliminate();
+    }
+    Worker->PlayerTypeNum=PlayerTypeNum_cache;
+    trash_can.empty();
+    Worker->player_pool.clear();
+    Worker->LetThemIn();
     return /*QVector<int>(PlayerTypeNum_cache)*/;
 }
 void Tournament::ValueMatrix_Change(unsigned int index){
@@ -507,6 +515,7 @@ void Tournament_Worker::LetThemIn(){
     std::stable_sort(player_pool.begin(),player_pool.end(),PlayerPtrType_Compare);
     for(int i=0;i<player_pool.length();++i) player_pool[i]->init(i,true);//希望我没理解错这个函数的意思(
     for(int i=0;i<player_pool.length();i++) player_pool[i]->goto_angle(calculate_angle(((double)i)/player_pool.length()));
+    for(int i=0;i<player_pool.length();i++) player_pool[i]->probility=Probability;//更新probaility"请忽略错词qwq"
     return ;
 }
 

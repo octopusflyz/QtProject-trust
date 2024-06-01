@@ -19,6 +19,9 @@ pg_allplayers::pg_allplayers(QWidget *parent)
 
     connect(ui->spinBox_11,&QSpinBox::valueChanged,ui->horizontalSlider_3,&QSlider::setValue);
     connect(ui->horizontalSlider_3,&QSlider::valueChanged,ui->spinBox_11,&QSpinBox::setValue);
+    // connect(ui->pushButton_2,&QPushButton::clicked,ui->pushButton_2,[&](){
+    //     if(ui->pushButton_2->text()[2]=='a';
+    // })
     ui->horizontalSlider_1->setValue(10);
     ui->horizontalSlider_2->setValue(5);
     ui->horizontalSlider_3->setValue(5);

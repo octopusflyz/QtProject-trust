@@ -109,7 +109,6 @@ void pg_mistakes::right_opponent(QLabel* opponent,int round){
         ui->machine_01->hide();
         ui->machine_10->hide();
         ui->machine_11->hide();
-        ui->left_happy->hide();
 
         opponent->hide();
 

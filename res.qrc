@@ -10,5 +10,64 @@
         <file>image/machine_update.png</file>
         <file>image/tournament.png</file>
         <file>image/what to do.png</file>
+        <file>image/random.png</file>
+        <file>image/simpleton.png</file>
+        <file>image/cheater.png</file>
+        <file>image/copykitten.png</file>
+        <file>image/grudger.png</file>
+        <file>image/cooperator.png</file>
+        <file>image/copycat.png</file>
+        <file>image/detective.png</file>
+        <file>image/hat_cheater.png</file>
+        <file>image/hat_cooperator.png</file>
+        <file>image/hat_copycat.png</file>
+        <file>image/hat_detective.png</file>
+        <file>image/hat_grudger.png</file>
+        <file>image/hat_random.png</file>
+        <file>image/hat_copykitten.png</file>
+        <file>image/hat_simpleton.png</file>
+        <file>image/payoffs.png</file>
+        <file>image/copycat_right.png</file>
+        <file>image/hate.png</file>
+        <file>image/sad.png</file>
+        <file>image/excited.png</file>
+        <file>image/happy.png</file>
+        <file>image/cheater_right.png</file>
+        <file>image/cooperator_right.png</file>
+        <file>image/detective_right.png</file>
+        <file>image/grudger_right.png</file>
+        <file>image/copycat_excited.png</file>
+        <file>image/copycat_happy.png</file>
+        <file>image/copycat_hate.png</file>
+        <file>image/copycat_sad.png</file>
+        <file>image/copycat_leftexcited.png</file>
+        <file>image/copycat_lefthappy.png</file>
+        <file>image/copycat_leftsad.png</file>
+        <file>image/copycat_puzzle.png</file>
+        <file>sounds/bg_music.mp3</file>
+        <file>sounds/bonk.mp3</file>
+        <file>sounds/button1.mp3</file>
+        <file>sounds/button2.mp3</file>
+        <file>sounds/button3.mp3</file>
+        <file>sounds/coin_get.mp3</file>
+        <file>sounds/coin_insert.mp3</file>
+        <file>sounds/drumroll.mp3</file>
+        <file>sounds/evil_laugh.mp3</file>
+        <file>sounds/fart.mp3</file>
+        <file>sounds/machine_start.mp3</file>
+        <file>sounds/scratch_in.mp3</file>
+        <file>sounds/scratch_out.mp3</file>
+        <file>sounds/squeak.mp3</file>
+        <file>sounds/thump.mp3</file>
+        <file>sounds/whoosh.mp3</file>
+        <file>image/right_excited.png</file>
+        <file>image/right_happy.png</file>
+        <file>image/right_hate.png</file>
+        <file>image/right_sad.png</file>
+        <file>image/cooperator_hr.png</file>
+        <file>image/copycat_hr.png</file>
+        <file>image/cheater_hr.png</file>
+        <file>image/detective_hr.png</file>
+        <file>image/grudger_hr.png</file>
     </qresource>
 </RCC>

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -16,11 +17,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->twoplayerButton,&QPushButton::clicked,this,[=](){
         ui->stackedWidget->setCurrentIndex(2);
     });
-    connect(ui->tournamentButton,&QPushButton::clicked,this,[=](){
+    connect(ui->mistakesButton,&QPushButton::clicked,this,[=](){
         ui->stackedWidget->setCurrentIndex(3);
     });
-    connect(ui->allplayerButton,&QPushButton::clicked,this,[=](){
+    connect(ui->tournamentButton,&QPushButton::clicked,this,[=](){
         ui->stackedWidget->setCurrentIndex(4);
+    });
+    connect(ui->allplayerButton,&QPushButton::clicked,this,[=](){
+        ui->stackedWidget->setCurrentIndex(5);
     });
 }
 

@@ -2,6 +2,15 @@
 #define PG_TWOPLAYERS_H
 
 #include <QWidget>
+#include<QPropertyAnimation>
+#include<QAbstractAnimation>
+#include<QParallelAnimationGroup>
+#include<QSequentialAnimationGroup>
+#include<QLabel>
+#include"match_result.h"
+#include"player.h"
+#include"judge.h"
+#include<QList>
 
 namespace Ui {
 class pg_twoplayers;
@@ -11,20 +20,73 @@ class pg_twoplayers : public QWidget
 {
     Q_OBJECT
 
+
 public:
     explicit pg_twoplayers(QWidget *parent = nullptr);
     ~pg_twoplayers();
     void paintEvent(QPaintEvent *event);
-    //小人
-    int posx1=50,posy1=260;
-    int posx2=575,posy2=260;
-    //金币
-    int px1=130,py1=300;
-    int px2=565,py2=300;
-    bool flag=0;//投币前
+
+    void same_part();
+    void first_opponent(bool mychoice);//1 coop 0 cheat
+    void second_opponent(bool mychoice);
+    void third_opponent(bool mychoice);
+    void fourth_opponent(bool mychoice);
+    void fifth_opponent(bool mychoice);
+    void right_opponent(QLabel* opponent1,Match_Result result);
+    void left_opponent();
+    void show_hat(QLabel* opponent);
+   void reaction(QLabel* opponent,Match_Result result);//
+    void hiding_all();
+    QList <Match_Result> myhistory ;
+    //插入的代码
+    //输入type,history得到对方的choice
+    int get_oppo_choice(int type,QList<Match_Result> &history);//type代表的类型如下
+    QVector<QSharedPointer<Judge>> judge;//用于计算博弈结果:judge 0--copycat
+        //     1--cheater
+        //     2--cooperate
+        //     3--grudger
+        //     4--detective
+    QVector<QSharedPointer<Player>> player;//player 0-4对应顺序如上
+    QSharedPointer<Player> player_user;//没用到，但可以先留着doge
+    //插入的代码
+    void score_show();
+    int current_score=0;
+    int opponent_score=0;
+    int total_score=0;
+
+
+private slots:
+    void on_cheatButton_clicked();
+
+    void on_cooperateButton_clicked();
 
 private:
+
+    int round=0;
+    bool flag=0;//记录animationchanges
     Ui::pg_twoplayers *ui;
+    QSequentialAnimationGroup *Group;
+   //  QSequentialAnimationGroup *Group_2;
+    QParallelAnimationGroup *forwardGroup;
+   // QParallelAnimationGroup *forwardGroup_3;
+    QParallelAnimationGroup *backwardGroup;
+    // QParallelAnimationGroup *backwardGroup_3;
+
+    QPropertyAnimation* user_f;
+    QPropertyAnimation* user_b;
+    QPropertyAnimation* opponent_f;
+    QPropertyAnimation* opponent_b;
+    //QPropertyAnimation* animation_3;
+
+    //QPropertyAnimation* cheater_2b;
+    QPropertyAnimation* coin_animation;
+    QPropertyAnimation* coin_animation1;
+    QPropertyAnimation* coin_animationb;
+    QPropertyAnimation* coin_animation1b;
+    QPropertyAnimation* coin_animationup;
+    QPropertyAnimation* coin_animation1up;
+
+    QPropertyAnimation* machine;
 };
 
 #endif // PG_TWOPLAYERS_H

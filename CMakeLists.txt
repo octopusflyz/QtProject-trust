@@ -40,6 +40,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         pg_twoplayers.h pg_twoplayers.cpp pg_twoplayers.ui
         pg_allplayers.h pg_allplayers.cpp pg_allplayers.ui
         pg_tournament.h pg_tournament.cpp pg_tournament.ui
+        slider.h slider.cpp slider.ui
+        pg_mistakes.h pg_mistakes.cpp pg_mistakes.ui
 
 
 

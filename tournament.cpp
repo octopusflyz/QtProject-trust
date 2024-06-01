@@ -33,6 +33,7 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
     //下面是所有变量都已经定义好了之后各个信号和槽之间的链接关系的一个实现
     //注意：我没有写QSpinBox的绑定(就都合作都cheat的val应该是相等的)，所以需要在外面绑定好
     /*下面是原来文件的构造部分*/
+
     Player_slider.resize(8);
     Player_slider[0]=mui->ui->widget->get_qslider();
     Player_slider[1]=mui->ui->widget_2->get_qslider();
@@ -356,6 +357,8 @@ void Tournament::PlayerNum_Change(int index){
     Worker->LetThemIn();
     locker.unlock();
     Worker->Set_flag(0,false,false);
+    Start_button->setText("Start");
+    dynamic_cast<pg_allplayers*>(parentWidget())->flag=0;
     //emit Connect_signal();
     return /*QVector<int>(PlayerTypeNum_cache)*/;
 }

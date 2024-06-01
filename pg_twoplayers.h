@@ -7,7 +7,10 @@
 #include<QParallelAnimationGroup>
 #include<QSequentialAnimationGroup>
 #include<QLabel>
-#include<QElapsedTimer>
+#include"match_result.h"
+#include"player.h"
+#include"judge.h"
+#include<QList>
 
 namespace Ui {
 class pg_twoplayers;
@@ -24,17 +27,28 @@ public:
     void paintEvent(QPaintEvent *event);
 
     void same_part();
-    void first_opponent();
-    void second_opponent();
-    void third_opponent();
-    void fourth_opponent();
-    void fifth_opponent();
-    void right_opponent(QLabel* opponent1);
+    void first_opponent(bool mychoice);//1 coop 0 cheat
+    void second_opponent(bool mychoice);
+    void third_opponent(bool mychoice);
+    void fourth_opponent(bool mychoice);
+    void fifth_opponent(bool mychoice);
+    void right_opponent(QLabel* opponent1, const Match_Result &result);
     void left_opponent();
     void show_hat(QLabel* opponent);
-   void reaction(QLabel* opponent);//,MatchResult& result
+   void reaction(QLabel* opponent,const Match_Result &result);//
     void hiding_all();
-    QElapsedTimer t;
+    QList <Match_Result> myhistory ;
+    //插入的代码
+    //输入type,history得到对方的choice
+    int get_oppo_choice(int type,QList<Match_Result> &history);//type代表的类型如下
+    QVector<QSharedPointer<Judge>> judge;//用于计算博弈结果:judge 0--copycat
+        //     2--cheater 好像对应错了
+        //     1--cooperate
+        //     3--grudger
+        //     4--detective
+    QVector<QSharedPointer<Player>> player;//player 0-4对应顺序如上
+    QSharedPointer<Player> player_user;//没用到，但可以先留着doge
+    //插入的代码
 
 private slots:
     void on_cheatButton_clicked();

@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
@@ -31,7 +37,14 @@
     <widget class="pg_twoplayers" name="page_3"/>
     <widget class="pg_mistakes" name="page_4"/>
     <widget class="pg_tournament" name="page_5"/>
-    <widget class="pg_allplayers" name="page_6"/>
+    <widget class="pg_allplayers" name="page_6">
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+    </widget>
    </widget>
    <widget class="QPushButton" name="welcomeButton">
     <property name="geometry">
@@ -118,7 +131,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>17</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

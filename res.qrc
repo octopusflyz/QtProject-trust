@@ -44,5 +44,21 @@
         <file>image/copycat_lefthappy.png</file>
         <file>image/copycat_leftsad.png</file>
         <file>image/copycat_puzzle.png</file>
+        <file>sounds/bg_music.mp3</file>
+        <file>sounds/bonk.mp3</file>
+        <file>sounds/button1.mp3</file>
+        <file>sounds/button2.mp3</file>
+        <file>sounds/button3.mp3</file>
+        <file>sounds/coin_get.mp3</file>
+        <file>sounds/coin_insert.mp3</file>
+        <file>sounds/drumroll.mp3</file>
+        <file>sounds/evil_laugh.mp3</file>
+        <file>sounds/fart.mp3</file>
+        <file>sounds/machine_start.mp3</file>
+        <file>sounds/scratch_in.mp3</file>
+        <file>sounds/scratch_out.mp3</file>
+        <file>sounds/squeak.mp3</file>
+        <file>sounds/thump.mp3</file>
+        <file>sounds/whoosh.mp3</file>
     </qresource>
 </RCC>

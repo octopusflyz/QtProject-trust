@@ -32,9 +32,18 @@ pg_allplayers::pg_allplayers(QWidget *parent)
     ui->spinBox_8->setValue(0);
     Tournament *T=new Tournament(this,this);
     T->lower();
-    setStyleSheet("*{border: 1px solid red;} QPushButton:hover{ background-color: green; }");
+    flag=0;
+    // setStyleSheet("*{border: 1px solid red;} QPushButton:hover{ background-color: green; }");
 }
 
+void pg_allplayers::on_pushButton_2_clicked()
+{
+    if(flag%2==0)
+        ui->pushButton_2->setText("Stop");
+    else
+        ui->pushButton_2->setText("Start");
+    flag++;
+}
 
 pg_allplayers::~pg_allplayers()
 {

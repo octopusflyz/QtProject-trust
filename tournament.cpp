@@ -476,11 +476,16 @@ void Tournament_Worker::Competition(){
     anim->setStartValue(0);
     anim->setEndValue(Tournament::PlayerNum);
     anim->setDuration(500);
+    connect(anim,&QAbstractAnimation::finished,[this](){
+        for(int i=0;i<player_pool.length();i++){
+            player_pool[i]->display_score();
+        }
+    });
     anim->start(QAbstractAnimation::DeleteWhenStopped);
     tournament->update();
     for(int i=0;i<player_pool.length()-1;++i)
         for(int j=i+1;j<player_pool.length();++j)
-            one_vs_one(i,j);
+            one_vs_one(i,j); 
     QList<QSharedPointer<Player>> lst=player_pool;
     std::sort(lst.begin(),lst.end(),PlayerPtrScore_Compare);
     Winner_list.clear();
@@ -494,6 +499,10 @@ void Tournament_Worker::Competition(){
 
 void Tournament_Worker::KickThemOut(){
     qDebug()<<"KICKTHEMOUT";
+    for(int i=0;i<player_pool.length();i++){
+        player_pool[i]->score_label->setText("");
+        player_pool[i]->score_label->hide();
+    }
     Elim_list.clear();
     QList<QSharedPointer<Player>> lst=player_pool;
     std::sort(lst.begin(),lst.end(),PlayerPtrScore_Compare);

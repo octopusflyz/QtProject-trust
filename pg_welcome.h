@@ -15,7 +15,7 @@ public:
     explicit pg_welcome(QWidget *parent = nullptr);
     ~pg_welcome();
 
-private:
+// private:
     Ui::pg_welcome *ui;
 };
 

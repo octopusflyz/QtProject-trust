@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     music_player->setAudioOutput(audioOutput.data());
     music_player->setSource(QUrl("qrc:/sounds/The_Road_Not_Taken.flac"));
     music_player->setLoops(QMediaPlayer::Infinite);
-    audioOutput->setVolume(50);
+    audioOutput->setVolume(4);
     connect(ui->pushButton,&QPushButton::clicked,this,&MainWindow::Play);
     connect(dynamic_cast<pg_welcome*>(ui->stackedWidget->widget(0))->ui->startButton,
             &QPushButton::clicked,[this](){ui->stackedWidget->setCurrentIndex(1);});

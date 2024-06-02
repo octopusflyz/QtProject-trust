@@ -31,6 +31,14 @@ pg_allplayers::pg_allplayers(QWidget *parent)
     ui->spinBox_6->setValue(3);
     ui->spinBox_7->setValue(0);
     ui->spinBox_8->setValue(0);
+    ui->widget->setToolTip("Hello This is CopyCat.\nI will copy everything you\ndo in the previous turn.");
+    ui->widget_2->setToolTip("Don't try to get anything\nfrom me. I will only cheat.");
+    ui->widget_3->setToolTip("Hello Dear! What a nice day!\nI will always cooperate with you.");
+    ui->widget_4->setToolTip("I will be nice ONLY IF you\nare nice. I will cooperate until\nyou cheat, then I will cheat.");
+    ui->widget_5->setToolTip("I like things being complicated.\nI will Cooperate, Cheat,\nCooperate, Cooperate, then\nif you ever cheats, I will\nplay like Copycat. But if you never\ncheats, I will keep on cheating.");
+    ui->widget_6->setToolTip("CopyKitten speaking. A cousin of\nCopycat I am, but I am\nmore tolerant.I will cheat\nback only if you cheats me\ntwice in a row. Copy copy.");
+    ui->widget_7->setToolTip("I am simpleton, and I am simple:\nyou cooperate, I same as last,\neven if a mistake occurred\nyou cheat, I change my move,\neven if a mistake occurred.");
+    ui->widget_8->setToolTip("epaoi?fkj!wedm,cnx@asd&opj");
     Tournament *T=new Tournament(this,this);
     T->lower();
     flag=0;

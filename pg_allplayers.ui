@@ -71,6 +71,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <height>73</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string/>
+     </property>
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>

@@ -670,6 +670,8 @@ void Tournament_Worker::Button_OnPush(int index){
     if(index==1){
         if(start_flag) start_flag=false;
         locker.unlock();
+        tournament->Start_button->setText("Start");
+        dynamic_cast<pg_allplayers*>(tournament->parentWidget())->flag=0;
         Work_OnStep(Get_step());//有可能有线程安全问题
         return;
     }

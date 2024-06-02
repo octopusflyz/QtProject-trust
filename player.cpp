@@ -278,7 +278,7 @@ QSharedPointer<Player> Player_Detective::clone(){
 
 int Player_Detective::choice(const QList< Match_Result > & history){
     if(history.size()<=3)
-        return random_mistake(history.size()%2);
+        return random_mistake(history.size()==1?1:0);
     else{
         int flag=0;//0 for acts like copy cat , 1 for acts like cheat
         if(history[0].action[1-curr_id]+history[1].action[1-curr_id]+history[2].action[1-curr_id]+history[3].action[1-curr_id]) flag=0;

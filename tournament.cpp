@@ -91,8 +91,8 @@ Tournament::Tournament(pg_allplayers *mui,QWidget *parent)
     // Worker->moveToThread(Worker_Thread.data());//移动到新线程中
     // Worker_Thread->start();
 
-    Order_change.resize(type_number);
-    for(int i=0;i<type_number;++i) Order_change.append(i);
+    // Order_change.resize(type_number);
+    // for(int i=0;i<type_number;++i) Order_change.append(i);
 
     //PlayerNum-Slider的信号链接
     PlayerTypeNum_signal = QSharedPointer<QSignalMapper>::create(this);
@@ -257,9 +257,9 @@ void Tournament::reset(){
     Prob_slider->setValue(Init_Probility);
     Prob_spinbox->setValue(Init_Probility);
     NumGame_slider->blockSignals(false);
-    NumGame_spinbox->blockSignals(true);
+    NumGame_spinbox->blockSignals(false);
     ElimNum_slider->blockSignals(false);
-    ElimNum_spinbox_1->blockSignals(true);
+    ElimNum_spinbox_1->blockSignals(false);
     ElimNum_spinbox_2->blockSignals(false);
     Prob_slider->blockSignals(false);
     Prob_spinbox->blockSignals(false);

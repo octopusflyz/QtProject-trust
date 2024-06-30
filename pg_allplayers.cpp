@@ -10,9 +10,9 @@ pg_allplayers::pg_allplayers(QWidget *parent)
     ui->setupUi(this);
     connect(ui->spinBox_9,&QSpinBox::valueChanged,ui->horizontalSlider_1,&QSlider::setValue);
     connect(ui->horizontalSlider_1,&QSlider::valueChanged,ui->spinBox_9,&QSpinBox::setValue);
+
     connect(ui->spinBox_12,&QSpinBox::valueChanged,ui->horizontalSlider_2,&QSlider::setValue);
     connect(ui->horizontalSlider_2,&QSlider::valueChanged,ui->spinBox_12,&QSpinBox::setValue);
-
     connect(ui->spinBox_13,&QSpinBox::valueChanged,ui->horizontalSlider_2,&QSlider::setValue);
     connect(ui->horizontalSlider_2,&QSlider::valueChanged,ui->spinBox_13,&QSpinBox::setValue);
 

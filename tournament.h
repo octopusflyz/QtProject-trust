@@ -126,7 +126,7 @@ public:
     QList< QSharedPointer<Player> > player_pool;//tournament参赛者,保留下来了,在工作线程没用到这个
 
     //新线程：Tournament_Worker在这个线程中运行
-    QSharedPointer<QThread> Worker_Thread;
+    //QSharedPointer<QThread> Worker_Thread;
 
     void reset();//重设值函数
     void one_vs_one(int id1,int id2);//1-1比赛
